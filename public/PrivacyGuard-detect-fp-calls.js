@@ -165,7 +165,7 @@ function setupDeviceInfoMonitoring() {
             console.log(`Accessed: ${accessedProperty} from: ${origin}`);
 
             // Increment the accessed counter
-            accessedPropertiesCounter[accessedProperty] = (accessedPropertiesCounter[accessedProperty] || 0) + 1;
+            //accessedPropertiesCounter[accessedProperty] = (accessedPropertiesCounter[accessedProperty] || 0) + 1;
 
             // Save accessed property to local storage
             saveAccessToLocalStorage(accessedProperty, getDomain());

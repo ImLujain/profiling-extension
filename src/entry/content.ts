@@ -27,24 +27,13 @@ detectFBScript.remove()
 
 
 
-
-//TF-IDF-interests.js
-// const interest = document.createElement('script');
-// interest.src = chrome.runtime.getURL('TF-IDF-interests.js');
-// (document.head || document.documentElement).appendChild(interest);
-// interest.remove()
-
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     if (message.action === "get-property-accessed-count") {
-//         // Handle the message
-//         console.log("test new in content")
-//         // console.log("Property Accessed:", message.property, "Origin:", message.origin);
-//         // sendResponse({message})
-//     }
-// });
-
-
-
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "getLocalStorageDataForKey") {
+        const value = localStorage.getItem(request.key);
+        sendResponse({ data: value });
+    }
+    return true; // Return true to keep the message channel open
+});
 
 
 

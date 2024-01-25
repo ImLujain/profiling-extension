@@ -20,8 +20,13 @@
       <!-- Access Insights Tab -->
       <div v-if="currentTab === 'accesses'" class="access-insights">
         <h1>Access Insights</h1>
-        <p><strong>ToAccessed Attributes:</strong> <span>{{ accessData }}</span></p>
-        <!-- TODO: Implement Prop Access Insights  here -->
+        <div v-if="localStorageData" class="local-storage-data">
+          <h2>Local Storage Data:</h2>
+          <ul>
+            <li v-for="(item, index) in parsedLocalStorageData" :key="index">{{ item }}</li>
+          </ul>
+        </div>
+        <p v-else>No data found for this domain.</p>
       </div>
     </div>
     <div class="open-dashboard-container">
@@ -32,86 +37,95 @@
 
 <script setup lang="ts">
 import CircleProgressBar from './CircleProgressBar.vue';
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 
 const currentTab = ref('trackers');
 const uniqueTrackersCount = ref(0);
 const totalCount = ref(0);
 const uniqueTrackers = ref(0);
 const uniqueParentDomains = ref(0);
-let accessData = ref([]);
+let localStorageData = ref<string | null>(null);
 
-// Function to fetch data from local storage
-const fetchData = () => {
+// Function to fetch data from the webpage's local storage
+const fetchLocalStorageData = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs && tabs.length && tabs[0].url) {
-            try {
-                const currentDomain = new URL(tabs[0].url).hostname;
-                const localStorageKey = `accessedProperties_${currentDomain}`;
-                console.log(`local storage key:`, localStorageKey)
-                const storedData = localStorage.getItem(localStorageKey);
+        if (tabs.length > 0 && tabs[0].id != null && tabs[0].url) {
+            const currentDomain = new URL(tabs[0].url).hostname;
+            const localStorageKey = `accessedProperties_${currentDomain}`;
 
-                if (storedData !== null) {
-                    const accessedProperties = JSON.parse(storedData);
-                    accessData.value = accessedProperties;
-                } else {
-                    console.log("No data found in local storage for the current domain ", currentDomain);
-                    accessData.value = [];
-                }
-            } catch (error) {
-                if (error instanceof Error) {
-                    console.error("Error parsing URL: ", error.message);
-                } else {
-                    console.error("An unknown error occurred");
-                }
-            }
+            chrome.tabs.sendMessage(tabs[0].id, { action: "getLocalStorageDataForKey", key: localStorageKey }, response => {
+                localStorageData.value = response ? response.data : 'No data found for this key.';
+            });
         }
     });
 };
 
-// Watcher to fetch data whenever the current tab changes to 'accesses'
 watch(currentTab, (newTab) => {
-    if (newTab === 'accesses') {
-        fetchData();
+  if (newTab === 'accesses') {
+    fetchLocalStorageData();
+  }
+  if (newTab === 'trackers') {
+      chrome.runtime.sendMessage({ action: "getTrackers" }, function (response) {
+        if (response && response.trackers) {
+          totalCount.value = response.trackers.length;
+          uniqueParentDomains.value = response.uniqueDomainsCount;
+          uniqueTrackers.value = response.uniqueTrackersCount;
+        } else {
+          console.error("No tracker data received.");
+        }
+      });
     }
 });
 
-
-
-// Send a message to the background script to get trackers
-chrome.runtime.sendMessage({ action: "getTrackers" }, function (response) {
-    // Log the received response for debugging
-    console.log("Received response from background:", response);
-
-    // Check if response and response.trackers exist and are arrays
-    if (response && response.trackers) {
-      // Update the total count
-      totalCount.value = response.trackers.length;
-      uniqueParentDomains.value = response.uniqueDomainsCount;
-      uniqueTrackers.value = response.uniqueTrackersCount;
-
-    } else {
-      // If the data is not in the expected format, log an error message
-      console.log("Tracker data is not in the expected format or not available.");
-    }
-  });
-
-
-
-  // Fetch Unique Trackers Count
-  chrome.storage.local.get(['uniqueTrackersCount'], (data) => {
-    uniqueTrackersCount.value = data.uniqueTrackersCount || 0;
-  });
-
-  // TODO: Fetch data for Access Insights
-
-
-const openDashboard = () =>{
+const openDashboard = () => {
   chrome.tabs.create({url: 'dashboard.html'});
-}
+};
+
+// Computed property to parse the local storage data into an array
+const parsedLocalStorageData = computed(() => {
+  if (localStorageData.value) {
+    try {
+      return JSON.parse(localStorageData.value);
+    } catch (e) {
+      return [localStorageData.value]; // If not JSON, return as single item array
+    }
+  }
+  return [];
+});
 </script>
 
 <style scoped>
+#popup-container {
+  /* existing styles... */
+}
+
+.access-insights h2 {
+  font-size: 18px;
+  color: #333;
+}
+
+.local-storage-data {
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.local-storage-data ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.local-storage-data li {
+  background-color: #fff;
+  padding: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
 #popup-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #4a4a4a;
@@ -120,12 +134,16 @@ const openDashboard = () =>{
   width: 100%;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .tab-headers {
   display: flex;
   justify-content: space-around;
   margin-bottom: 20px;
+  background-color: #007BFF;
+  border-radius: 8px;
 }
 
 .tab-headers button {
@@ -134,14 +152,19 @@ const openDashboard = () =>{
   padding: 10px 20px;
   cursor: pointer;
   font-size: 16px;
-  color: #007BFF;
-  border-bottom: 3px solid transparent;
-  transition: border-color 0.3s;
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tab-headers button:hover {
+  background-color: #0056b3;
+  color: #f9f9f9;
 }
 
 .tab-headers .active-tab {
-  border-bottom: 3px solid #007BFF;
-  font-weight: 600;
+  background-color: white;
+  color: #007BFF;
+  border-radius: 8px;
 }
 
 .tab-content {
@@ -164,5 +187,47 @@ span {
   font-weight: 600;
 }
 
-/* Add more styles as needed */
+.local-storage-data {
+  background-color: #e8f0fe;
+  border: 1px solid #b6d4fe;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.local-storage-data h2 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.local-storage-data ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.local-storage-data li {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #b6d4fe;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.open-dashboard-container button {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.open-dashboard-container button:hover {
+  background-color: #0056b3;
+}
 </style>
+
+
