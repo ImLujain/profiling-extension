@@ -23,7 +23,10 @@
         <div v-if="localStorageData" class="local-storage-data">
           <h2>Local Storage Data:</h2>
           <ul>
-            <li v-for="(item, index) in parsedLocalStorageData" :key="index">{{ item }}</li>
+            <li v-for="(item, index) in parsedLocalStorageData" :key="index" :class="getHighlightClass(item)">
+              {{ item }}
+          </li>
+
           </ul>
         </div>
         <p v-else>No data found for this domain.</p>
@@ -76,6 +79,18 @@ watch(currentTab, (newTab) => {
       });
     }
 });
+const getHighlightClass = (item: string) => {
+  if (item.includes('navigator.getBattery')) {
+    return 'highlight-battery';
+  }
+  if (item.includes('navigator.deviceMemory')) {
+    return 'highlight-battery';
+  }
+  return ''; // Default, no additional class
+};
+
+
+
 
 const openDashboard = () => {
   chrome.tabs.create({url: 'dashboard.html'});
@@ -112,6 +127,10 @@ const parsedLocalStorageData = computed(() => {
   margin-top: 10px;
 }
 
+.local-storage-data li.highlight-battery{
+  /* background-color: #ec5045; Yellow for battery */
+  background-color: rgba(236, 80, 69, 0.7);
+}
 .local-storage-data ul {
   list-style-type: none;
   padding: 0;
@@ -228,6 +247,8 @@ span {
 .open-dashboard-container button:hover {
   background-color: #0056b3;
 }
+
+
 </style>
 
 
