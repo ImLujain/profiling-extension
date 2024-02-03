@@ -19,47 +19,45 @@
                 </select>
             </div>
     <!-- the div and row that should hold both table an chart -->
-    <div class="row mb-4">
-    <!-- canvas div-->       
+<!-- The div and row that should hold both the table and chart -->
+<div class="row mb-4">
+    <!-- Combined canvas div -->
     <div class="col-lg-6">
-        <canvas id="topTrackersChart-profile1"></canvas>
+        <canvas id="topTrackersChart-profile1" style="display:none;"></canvas>
+        <canvas id="topTrackersChart-profile2" style="display:none;"></canvas>
+        <canvas id="topTrackersChart-profile3" style="display:none;"></canvas>
     </div>
+    
+    <!-- Table div -->
     <div class="col-lg-6">
-        <canvas id="topTrackersChart-profile2"></canvas>
+        <div class="table-responsive">
+            <table id="trackerTable" class="table">
+                <thead>
+                    <tr>
+                        <th>Tracker Domain</th>
+                        <th>Parent Domain</th>
+                        <th>Timestamp</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Pagination for the table -->
+        <nav aria-label="Table pagination">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
     </div>
-    <div class="col-lg-6">
-        <canvas id="topTrackersChart-profile3"></canvas>
-    </div>
-    <!-- table div-->
-    <div class="col-lg-6">
-    <div class="table-responsive">
-        <table id="trackerTable" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Tracker Domain</th>
-                    <th>Parent Domain</th>
-                    <th>Timestamp</th>
-                    <th>Category</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data will be inserted here by the populateTable function -->
-            </tbody>
-        </table>
-    </div>
-    <!-- Pagination for the table -->
-    <nav aria-label="Table pagination">
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </nav>
 </div>
 
-</div>
             <div class="text-center mt-4">
                 <button @click="clearStoredData" id="clearData" class="btn btn-primary">Clear Data</button>
             </div>
@@ -285,6 +283,43 @@ function clearStoredData() {
 </script>
 
 <style scoped>
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.table thead tr {
+    background-color: #008198;
+    color: #ffffff;
+    text-align: left;
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.table tbody tr:last-of-type {
+    border-bottom: 2px solid #008198;
+}
+
+.table tbody tr.active-row {
+    font-weight: bold;
+    color: #008198;
+}
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f6f7fb;
@@ -308,9 +343,6 @@ button:hover {
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
 }
 
-.table-responsive {
-    overflow-x: initial;
-}
 
 
 </style>

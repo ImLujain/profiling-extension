@@ -129,8 +129,6 @@ function monitorAccess(obj, property, handler) {
             get: function() {
                 const origin = getCurrentScriptOrigin();
                 handler(property, origin); // pass origin as an argument to handler
-                //console.log("original value", originalValue)
-
                 return originalValue;
             }
         });

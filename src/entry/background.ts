@@ -179,17 +179,6 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     if (message.action === "propertyAccessed") {
-//         // Handle the message
-//         console.log("background got the message from content")
-//         console.log("Property Accessed:", message.property, "Origin:", message.origin);
-//     }
-// });
-
-// Fetch the disconnect list at the start
-
-// Other existing code...
 
 interface AccessInfo {
     property: string;

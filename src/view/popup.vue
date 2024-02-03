@@ -11,7 +11,7 @@
       <!-- Trackers Summary Tab -->
       <div v-if="currentTab === 'trackers'" class="trackers-summary">
         <h1>Trackers Summary</h1>
-        <p><strong>Total Trackers Detected:</strong> <span>{{ totalCount }}</span></p>
+        <!-- <p><strong>Total Trackers Detected:</strong> <span>{{ totalCount }}</span></p> -->
         <p><strong>Unique Trackers:</strong> <span>{{ uniqueTrackers }}</span></p>
         <p><strong>Unique Parent Domains:</strong> <span>{{ uniqueParentDomains }}</span></p>
         <CircleProgressBar :value="uniqueTrackersCount" :max="uniqueTrackersCount">{{ uniqueTrackersCount }}</CircleProgressBar>
@@ -68,9 +68,9 @@ watch(currentTab, (newTab) => {
     fetchLocalStorageData();
   }
   if (newTab === 'trackers') {
-      chrome.runtime.sendMessage({ action: "getTrackers" }, function (response) {
-        if (response && response.trackers) {
-          totalCount.value = response.trackers.length;
+    chrome.runtime.sendMessage({ action: "getTrackers" }, (response) => {
+        if (response) {
+          // totalCount.value = response.detectedTrackers.length;
           uniqueParentDomains.value = response.uniqueDomainsCount;
           uniqueTrackers.value = response.uniqueTrackersCount;
         } else {
@@ -80,17 +80,48 @@ watch(currentTab, (newTab) => {
     }
 });
 const getHighlightClass = (item: string) => {
-  if (item.includes('navigator.getBattery')) {
-    return 'highlight-battery';
+  // High Privacy Concern - Red
+  const highPrivacy = [
+    'navigator.deviceMemory',
+    'navigator.hardwareConcurrency',
+    'navigator.geolocation',
+    'document.cookie',
+    'window.localStorage',
+    'window.sessionStorage',
+    'window.indexedDB',
+  ];
+
+  // Medium Privacy Concern - Orange
+  const mediumPrivacy = [
+    'navigator.appVersion',
+    'navigator.platform',
+    'navigator.vendor',
+    'navigator.languages',
+    'navigator.maxTouchPoints',
+    'screen.width',
+    'screen.height',
+    'navigator.connection',
+  ];
+
+  // Lower Privacy Concern - Yellow
+  const lowerPrivacy = [
+    'navigator.onLine',
+    'screen.orientation.type',
+    'document.hasFocus',
+    'navigator.getBattery',
+  ];
+
+  if (highPrivacy.some(attr => item.includes(attr))) {
+    return 'highlight-red'; // High privacy concern
   }
-  if (item.includes('navigator.deviceMemory')) {
-    return 'highlight-battery';
+  if (mediumPrivacy.some(attr => item.includes(attr))) {
+    return 'highlight-orange'; // Medium privacy concern
+  }
+  if (lowerPrivacy.some(attr => item.includes(attr))) {
+    return 'highlight-yellow'; // Lower privacy concern
   }
   return ''; // Default, no additional class
 };
-
-
-
 
 const openDashboard = () => {
   chrome.tabs.create({url: 'dashboard.html'});
@@ -127,10 +158,21 @@ const parsedLocalStorageData = computed(() => {
   margin-top: 10px;
 }
 
-.local-storage-data li.highlight-battery{
-  /* background-color: #ec5045; Yellow for battery */
-  background-color: rgba(236, 80, 69, 0.7);
+/* High Privacy Concern - Red */
+.local-storage-data li.highlight-red {
+  background-color: rgba(236, 80, 69, 0.5);; /* Red with opacity */
 }
+
+/* Medium Privacy Concern - Orange */
+.local-storage-data li.highlight-orange {
+  background-color: rgba(255, 165, 69, 0.5); /* Orange with opacity */
+}
+
+/* Lower Privacy Concern - Yellow */
+.local-storage-data li.highlight-yellow {
+  background-color: rgba(255, 255, 70, 0.5); /* Yellow with opacity */
+}
+
 .local-storage-data ul {
   list-style-type: none;
   padding: 0;
