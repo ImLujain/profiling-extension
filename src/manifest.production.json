@@ -21,7 +21,7 @@
                 "<all_urls>"
             ],
             "js": [
-                "/content.js"
+                "/content.js", "randomize-user-data.js"
             ],
             "run_at": "document_start"
         }

@@ -1,10 +1,5 @@
 <template>
-    <head>
-        <title>Dashboard</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <!-- <script src="chart.js"></script> -->
-    </head>
-    <body>
+
         <!-- main container -->
         <div class="container mt-5"> 
             <h1 class="text-center mb-4">Detected Trackers</h1>
@@ -12,13 +7,12 @@
             <div class="mb-4">
                 <label for="profileSelect">Select Profile:</label>
                 <select id="profileSelect" class="form-control">
-                    <option value="allProfiles">All Profiles</option>
-                    <option value="profile1">Profile 1</option>
-                    <option value="profile2">Profile 2</option>
-                    <option value="profile3">Profile 3</option>
+                    <option value="allProfiles" selected >All Profiles</option>
+                    <option value="profile1" >Windows Desktop</option>
+                    <option value="profile2">MacBook Air</option>
+                    <option value="profile3">iPhone X</option>
                 </select>
             </div>
-    <!-- the div and row that should hold both table an chart -->
 <!-- The div and row that should hold both the table and chart -->
 <div class="row mb-4">
     <!-- Combined canvas div -->
@@ -62,19 +56,18 @@
                 <button @click="clearStoredData" id="clearData" class="btn btn-primary">Clear Data</button>
             </div>
         </div>
-    </body>
-</template>
 
+</template>
 
 <script setup>
 
-import { onMounted } from 'vue';
-
+import { onMounted } from 'vue';   
 onMounted(() => {
 
-    const profileSelect = document.getElementById('profileSelect');
-    
-    // Set default profile if none is set
+ 
+const profileSelect = document.getElementById('profileSelect');
+
+// Set default profile if none is set
     chrome.storage.local.get('selectedProfile', function(data) {
         if (!data.selectedProfile) {
             chrome.storage.local.set({ selectedProfile: 'allProfiles' });
@@ -82,15 +75,14 @@ onMounted(() => {
             profileSelect.value = data.selectedProfile;
         }
     });
-    //event listner for when profile gets changed
+//event listner for when profile gets changed
     profileSelect.addEventListener('change', function() {
         const selectedProfile = profileSelect.value;
         chrome.storage.local.set({ selectedProfile: selectedProfile }, function() {
             loadTrackersForProfile();
         });
     });
-
-    //for table pagination, it supposed to show 4 profiles 
+//for table pagination, it supposed to show 4 profiles 
     document.querySelectorAll('.page-link').forEach((link, index) => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -112,10 +104,11 @@ onMounted(() => {
 });
 
 let topTrackersChartInstance = null;
-
 function loadTrackersForProfile() {
-    const selectedProfile = profileSelect.value;
+    let selectedProfile = profileSelect.value;
 
+    console.log('dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddds');
+    console.log(selectedProfile);
     // Initially hide all charts
     ['profile1', 'profile2', 'profile3'].forEach(profile => {
         const element = document.getElementById(`topTrackersChart-${profile}`);
@@ -123,10 +116,13 @@ function loadTrackersForProfile() {
             element.style.display = 'none';
         }
     });
-
-    if (selectedProfile === 'allProfiles') {
-        loadAllProfiles();
-        return;
+    console.log(selectedProfile);
+    console.log ('allProfiles');
+console.log(selectedProfile == 'allProfiles');
+var   profiletest =  ['profile1', 'profile2', 'profile3'];
+    if (selectedProfile != 'allProfiles') {
+    
+         profiletest = selectedProfile;
     }
 
     // Show only the chart for the selected profile
@@ -135,7 +131,7 @@ function loadTrackersForProfile() {
         selectedElement.style.display = 'block';
     }
 
-    chrome.runtime.sendMessage({action: "getTrackers", profile: selectedProfile}, function(response) {
+    chrome.runtime.sendMessage({action: "getTrackers", profile: profiletest}, function(response) {
         const tableBody = document.getElementById('trackerTable').querySelector('tbody');
         tableBody.innerHTML = '';
 
@@ -152,15 +148,15 @@ function loadTrackersForProfile() {
     });
 }
 
-
-
-
 function loadAllProfiles() {
     const profiles = ['profile1', 'profile2', 'profile3'];
+    console.log('gggggggggggggggggggggggggggggggggggggggggggg');
     profiles.forEach(profile => {
         chrome.runtime.sendMessage({action: "getTrackers", profile: profile}, function(response) {
             const trackers = response.trackers[profile] || [];
+            console.log(trackers);
             if (trackers.length > 0) {
+                console.log('gggggggggggggggggggggggggggggggggggggggggggg');
                 displayTopCategoriesChart(trackers, profile);
             }
         });
@@ -171,8 +167,6 @@ function loadAllProfiles() {
         document.getElementById(`topTrackersChart-${profile}`).style.display = 'block';
     });
 }
-
-
 
 // // load all tracker for all trackers option
 // function loadAllProfiles() {
@@ -207,7 +201,6 @@ function populateTable(trackers, tableBody) {
         row.insertCell(3).textContent = trackerInfo.category;
     });
 }
-
 
 function displayTopCategoriesChart(trackers, profile) {
     const categoryCounts = {};
@@ -267,8 +260,6 @@ function displayTopCategoriesChart(trackers, profile) {
     });
 }
 
-
-
 function clearStoredData() {
     chrome.storage.local.clear(function() {
         const error = chrome.runtime.lastError;
@@ -292,13 +283,11 @@ function clearStoredData() {
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
-
 .table thead tr {
     background-color: #008198;
     color: #ffffff;
     text-align: left;
 }
-
 .table th,
 .table td {
     padding: 12px 15px;
@@ -315,35 +304,28 @@ function clearStoredData() {
 .table tbody tr:last-of-type {
     border-bottom: 2px solid #008198;
 }
-
 .table tbody tr.active-row {
     font-weight: bold;
     color: #008198;
 }
 body {
-    font-family: 'Arial', sans-serif;
+    font-family:'Nanum Gothic', sans-serif;
     background-color: #f6f7fb;
 }
-
 h1 {
     color: #333;
     border-bottom: 3px solid #6371ef;
     padding-bottom: 0.5rem;
 }
-
 canvas {
     width: 100%;
     height: auto;
     max-height: 400px; /* Adjust based on your preference */
 }
-
 button:hover {
     background-color: #4e5bc4;
     transform: translateY(-3px);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
 }
-
-
-
 </style>
 

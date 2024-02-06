@@ -5,7 +5,7 @@ let currentProfile = 'profile1'; // default profile, I want to change it to all 
 
 const userAgents = {
     'profile1': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537',
-    'profile2': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0',
+    'profile2': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
     'profile3': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'
 } as any;
 
@@ -21,6 +21,7 @@ chrome.storage.local.get(['selectedProfile'], (data) => {
 chrome.storage.onChanged.addListener(function(changes) {
     if (changes.selectedProfile) {
         currentProfile = changes.selectedProfile.newValue;
+        if(currentProfile !== 'allProfiles') {
         chrome.declarativeNetRequest.updateDynamicRules({ //declartiveNetRequest to modify header
             addRules: [{
                 "id": 1,
@@ -45,17 +46,22 @@ chrome.storage.onChanged.addListener(function(changes) {
           });
         //sendUserAgentToContentScript();
     }
+    else {
+        chrome.declarativeNetRequest.updateDynamicRules({
+            removeRuleIds: [1] // Assuming 1 is the ID of the rule that modifies the user agent
+        }, () => {
+            if (chrome.runtime.lastError) {
+                console.error(`Error removing rules: ${chrome.runtime.lastError}`);
+            } else {
+                console.log("Rule to modify user agent removed successfully.");
+            }
+        });
+        
+    }
+}
 });
 
-// Note: With the new declarativeNetRequest rules, you are no longer embedding user agents info through content script
 
-// function sendUserAgentToContentScript() {
-//     const userAgent = userAgents[currentProfile];
-//     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-//         if(tabs && tabs.length)
-//             chrome.tabs.sendMessage(tabs[0].id!, { action: "setUserAgent", value: userAgent });
-//     });
-// }
 
 async function fetchDisconnectList() {
     try {
@@ -67,25 +73,7 @@ async function fetchDisconnectList() {
     }
 }
 
-//TODO Lujain: webRequest is outdated and no longer supported. Reimplement it with the new "declarativeNetRequest". I am coded the user-agent feature for you to help you with an example. Your task is to implement gathering trackerInfo
 
-// chrome.webRequest.onBeforeSendHeaders.addListener(
-//     function(details) {
-//         const userAgent = userAgents[currentProfile];
-//         if (userAgent) {
-//             for (let header of details.requestHeaders) {
-//                 if (header.name.toLowerCase() === 'user-agent') {
-//                     header.value = userAgent;
-//                     return { requestHeaders: details.requestHeaders };
-//                 }
-//             }
-//         }
-//     },
-//     { urls: ["<all_urls>"] },
-//     ["blocking", "requestHeaders"]
-// );
-
-// // on before request "Fires when a request is about to occur.
 // //This event is sent before any TCP connection is made and can be used to cancel or redirect requests. "
 chrome.webRequest.onBeforeRequest.addListener(
     function(details:any) {
@@ -178,7 +166,6 @@ chrome.runtime.onMessage.addListener(
         
     }
 );
-
 
 interface AccessInfo {
     property: string;
