@@ -1,88 +1,90 @@
 <template>
-
-        <!-- main container -->
-        <div class="container mt-5"> 
-            <h1 class="text-center mb-4">Detected Trackers</h1>
-            <!-- profile div-->
-            <div class="mb-4">
-                <label for="profileSelect">Select Profile:</label>
-                <select id="profileSelect" class="form-control">
-                    <option value="allProfiles" selected >All Profiles</option>
-                    <option value="profile1" >Windows Desktop</option>
-                    <option value="profile2">MacBook Air</option>
-                    <option value="profile3">iPhone X</option>
-                </select>
-            </div>
-<!-- The div and row that should hold both the table and chart -->
-<div class="row mb-4">
-    <!-- Combined canvas div -->
-    <div class="col-lg-6">
-        <canvas id="topTrackersChart-profile1" style="display:none;"></canvas>
-        <canvas id="topTrackersChart-profile2" style="display:none;"></canvas>
-        <canvas id="topTrackersChart-profile3" style="display:none;"></canvas>
-    </div>
-    
-    <!-- Table div -->
-    <div class="col-lg-6">
-        <div class="table-responsive">
-            <table id="trackerTable" class="table">
-                <thead>
-                    <tr>
-                        <th>Tracker Domain</th>
-                        <th>Parent Domain</th>
-                        <th>Timestamp</th>
-                        <th>Category</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Table rows will be inserted here dynamically -->
-                </tbody>
-            </table>
-        </div>
-        <!-- Pagination for the table -->
-        <nav aria-label="Table pagination">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
-    </div>
-</div>
-
-            <div class="text-center mt-4">
-                <button @click="clearStoredData" id="clearData" class="btn btn-primary">Clear Data</button>
-            </div>
+    <!-- main container -->
+    <div class="div-header  color-047488 text-left pl-3">Dashboard</div>
+    <!-- profile div-->
+    <div id="content" class="mt-3">
+        <div class=" row col-4">
+            <label for="profileSelect">Select Profile:</label>
+            <select id="profileSelect" class="form-control">
+                <option value="allProfiles" selected>All Profiles</option>
+                <option value="profile1">Windows Desktop</option>
+                <option value="profile2">MacBook Air</option>
+                <option value="profile3">iPhone X</option>
+            </select>
         </div>
 
+        <!-- The div and row that should hold both the table and chart -->
+        <div class="row mb-4">
+            <div id="table-info">
+
+                <!-- Combined canvas div -->
+                <div class="col-lg-12 mt-3">
+                    <canvas id="topTrackersChart"></canvas>
+                </div>
+
+                <!-- Table div -->
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table id="trackerTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tracker Domain</th>
+                                    <th>Parent Domain</th>
+                                    <th>Timestamp</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Table rows will be inserted here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination for the table -->
+                    <nav aria-label="Table pagination">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="text-center mt-4">
+                    <button @click="clearStoredData" id="clearData" class="btn btn-primary">Clear Data</button>
+                </div>
+            </div>
+            <div id="no-result"><img src="./../../public/no-result.png" /> No trackers detected.</div>
+        </div>
+
+
+    </div>
 </template>
 
 <script setup>
 
-import { onMounted } from 'vue';   
+import { onMounted } from 'vue';
 onMounted(() => {
 
- 
-const profileSelect = document.getElementById('profileSelect');
 
-// Set default profile if none is set
-    chrome.storage.local.get('selectedProfile', function(data) {
+    const profileSelect = document.getElementById('profileSelect');
+
+    // Set default profile if none is set
+    chrome.storage.local.get('selectedProfile', function (data) {
         if (!data.selectedProfile) {
             chrome.storage.local.set({ selectedProfile: 'allProfiles' });
         } else {
             profileSelect.value = data.selectedProfile;
         }
     });
-//event listner for when profile gets changed
-    profileSelect.addEventListener('change', function() {
+    //event listner for when profile gets changed
+    profileSelect.addEventListener('change', function () {
         const selectedProfile = profileSelect.value;
-        chrome.storage.local.set({ selectedProfile: selectedProfile }, function() {
+        chrome.storage.local.set({ selectedProfile: selectedProfile }, function () {
             loadTrackersForProfile();
         });
     });
-//for table pagination, it supposed to show 4 profiles 
+    //for table pagination, it supposed to show 4 profiles 
     document.querySelectorAll('.page-link').forEach((link, index) => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -106,67 +108,70 @@ const profileSelect = document.getElementById('profileSelect');
 let topTrackersChartInstance = null;
 function loadTrackersForProfile() {
     let selectedProfile = profileSelect.value;
-
-    console.log('dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddds');
-    console.log(selectedProfile);
     // Initially hide all charts
     ['profile1', 'profile2', 'profile3'].forEach(profile => {
-        const element = document.getElementById(`topTrackersChart-${profile}`);
+        const element = document.getElementById(`topTrackersChart`);
         if (element) {
             element.style.display = 'none';
         }
     });
-    console.log(selectedProfile);
-    console.log ('allProfiles');
-console.log(selectedProfile == 'allProfiles');
-var   profiletest =  ['profile1', 'profile2', 'profile3'];
+    var profiletest = ['profile1', 'profile2', 'profile3'];
     if (selectedProfile != 'allProfiles') {
-    
-         profiletest = selectedProfile;
+        profiletest = [selectedProfile];
     }
+    console.log('profiletest')
 
+    console.log(profiletest)
     // Show only the chart for the selected profile
-    const selectedElement = document.getElementById(`topTrackersChart-${selectedProfile}`);
-    if (selectedElement) {
-        selectedElement.style.display = 'block';
-    }
 
-    chrome.runtime.sendMessage({action: "getTrackers", profile: profiletest}, function(response) {
-        const tableBody = document.getElementById('trackerTable').querySelector('tbody');
-        tableBody.innerHTML = '';
 
-        const trackers = response.trackers[selectedProfile] || [];
-        if (trackers.length > 0) {
-            populateTable(trackers, tableBody);
-            displayTopCategoriesChart(trackers, selectedProfile);
-        } else {
-            const row = tableBody.insertRow();
-            const cell = row.insertCell(0);
-            cell.textContent = "No trackers detected.";
-            cell.colSpan = 4;
-        }
-    });
-}
+    profiletest.forEach(profile => {
+        chrome.runtime.sendMessage({ action: "getTrackers", profile: profile }, function (response) {
+            const tableBody = document.getElementById('trackerTable').querySelector('tbody');
+            tableBody.innerHTML = '';
 
-function loadAllProfiles() {
-    const profiles = ['profile1', 'profile2', 'profile3'];
-    console.log('gggggggggggggggggggggggggggggggggggggggggggg');
-    profiles.forEach(profile => {
-        chrome.runtime.sendMessage({action: "getTrackers", profile: profile}, function(response) {
             const trackers = response.trackers[profile] || [];
-            console.log(trackers);
+            console.log(profile)
+            console.log(response.trackers[profile])
             if (trackers.length > 0) {
-                console.log('gggggggggggggggggggggggggggggggggggggggggggg');
+                populateTable(trackers, tableBody);
                 displayTopCategoriesChart(trackers, profile);
+                profiletest.forEach(profile => {
+                    document.getElementById(`topTrackersChart`).style.display = 'block';
+
+                });
+
+                document.getElementById('no-result').style.display = 'none';
+                document.getElementById('table-info').style.display = 'block';
+
+            } else {
+                document.getElementById('table-info').style.display = 'none';
+                document.getElementById('no-result').style.display = 'block';
+
             }
         });
-    });
-
-    // Show all charts
-    ['profile1', 'profile2', 'profile3'].forEach(profile => {
-        document.getElementById(`topTrackersChart-${profile}`).style.display = 'block';
-    });
+    })
 }
+
+// function loadAllProfiles() {
+//     const profiles = ['profile1', 'profile2', 'profile3'];
+//     console.log('gggggggggggggggggggggggggggggggggggggggggggg');
+//     profiles.forEach(profile => {
+//         chrome.runtime.sendMessage({action: "getTrackers", profile: profile}, function(response) {
+//             const trackers = response.trackers[profile] || [];
+//             console.log(trackers);
+//             if (trackers.length > 0) {
+//                 console.log('gggggggggggggggggggggggggggggggggggggggggggg');
+//                 displayTopCategoriesChart(trackers, profile);
+//             }
+//         });
+//     });
+
+//     // Show all charts
+//     ['profile1', 'profile2', 'profile3'].forEach(profile => {
+//         document.getElementById(`topTrackersChart-${profile}`).style.display = 'block';
+//     });
+// }
 
 // // load all tracker for all trackers option
 // function loadAllProfiles() {
@@ -217,11 +222,11 @@ function displayTopCategoriesChart(trackers, profile) {
     const colors = topCategories.map((_, i) => `hsla(${i * 25}, 70%, 50%, 0.2)`);
     const borderColors = topCategories.map((_, i) => `hsla(${i * 25}, 70%, 50%, 1)`);
 
-    const canvasId = profile ? `topTrackersChart-${profile}` : 'topTrackersChart';
+    const canvasId = 'topTrackersChart';
     const ctx = document.getElementById(canvasId).getContext('2d');
 
-    if (window[`topTrackersChartInstance_${profile}`]) {
-        window[`topTrackersChartInstance_${profile}`].destroy();
+    if (window[`topTrackersChartInstance`]) {
+        window[`topTrackersChartInstance`].destroy();
     }
 
     const chartTitle = {
@@ -230,7 +235,7 @@ function displayTopCategoriesChart(trackers, profile) {
         'profile3': 'Profile 3'
     }[profile];
 
-    window[`topTrackersChartInstance_${profile}`] = new Chart(ctx, {
+    window[`topTrackersChartInstance`] = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: topCategories,
@@ -261,7 +266,7 @@ function displayTopCategoriesChart(trackers, profile) {
 }
 
 function clearStoredData() {
-    chrome.storage.local.clear(function() {
+    chrome.storage.local.clear(function () {
         const error = chrome.runtime.lastError;
         if (error) {
             console.error(error);
@@ -283,49 +288,79 @@ function clearStoredData() {
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
+
 .table thead tr {
     background-color: #008198;
     color: #ffffff;
     text-align: left;
 }
+
 .table th,
 .table td {
     padding: 12px 15px;
 }
 
+
 .table tbody tr {
     border-bottom: 1px solid #dddddd;
+}
+
+#dashboard-wrapper-container {
+    display: inline-block;
+    /* display: inline; */
+    width: 9%;
+    border: 1px solid red;
 }
 
 .table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 
+#no-result {
+    display: none;
+    margin: 3%;
+}
+
 .table tbody tr:last-of-type {
     border-bottom: 2px solid #008198;
 }
+
 .table tbody tr.active-row {
     font-weight: bold;
     color: #008198;
 }
+
 body {
-    font-family:'Nanum Gothic', sans-serif;
+    font-family: 'Nanum Gothic', sans-serif;
     background-color: #f6f7fb;
 }
+
 h1 {
     color: #333;
     border-bottom: 3px solid #6371ef;
     padding-bottom: 0.5rem;
 }
+
 canvas {
     width: 100%;
     height: auto;
-    max-height: 400px; /* Adjust based on your preference */
+    max-height: 400px;
+    /* Adjust based on your preference */
 }
+
 button:hover {
     background-color: #4e5bc4;
     transform: translateY(-3px);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+img {
+    width: 50px;
+}
+
+#topTrackersChart {
+    border-radius: 6px;
+    box-shadow: 2px 4px 5px 4px #afa1a1a8;
 }
 </style>
 

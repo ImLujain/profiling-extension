@@ -9,14 +9,80 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+
+<title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+      #sidbar{
+        .div-header {
+        font-family: 'Orbitron', sans-serif;
+        }
+        display: inline-block;
+        background: #f1f1f1;
+      }
+    /* display: inline; */
+      
+
+      #sidbar li {
+        list-style: none;
+    padding: 8px;
+    
+      }
+      #sidbar ul{
+  padding: 0px;
+    text-align: center;
+}
+.color-047488{
+  color: #047488;
+}
+      #sidbar img{
+        width: 23px;
+      }
+      #sidbar p{
+        padding-left: 6px;
+        display: inline-block;
+        margin: 2px;
+      }
+
+      #sidbar li:hover{
+        color: #047488;
+      }
+      .app{
+        display: inline-block;
+      }
+      .div-header {
+    padding: 10px 0;
+    border-bottom: 1px solid gray;
+      }
+      .cover{
+        height: 892px;
+
+      }
+    </style>
   </head>
   <body>
+    <header>
+    </header>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div class="row cover">
+    <div id="sidbar" class="col-2 ">
+      <div class="div-header text-center">Detected Trackers</div>
+      <ul >
+        <li> <img src="./dashboard.png"/>  <p>Dashboar</p> </li>
+        <li><img src="./about.png"/> <p>About us </p></li> 
+      </ul>
+    </div>
+    <div   id="app" ></div>
+    <div   id="app-content" class="col-9 ">
+    </div>
     <script src="Chart.js"></script>
     <!-- built files will be auto injected -->
+    </div>
   </body>
 </html>

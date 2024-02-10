@@ -11,7 +11,7 @@ window.addEventListener("load", () => {
     document.body.appendChild(contentDetectorWrapper)
 
     const contentDetectorHandlerApp = createApp(DashboardViewComponent)
-    contentDetectorHandlerApp.mount("#dashboard-wrapper-container") 
+    contentDetectorHandlerApp.mount("#app-content") 
 
 })
 
