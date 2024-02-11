@@ -1,6 +1,7 @@
 <template>
   <div id="popup-container">
     <!-- Tab Headers -->
+    <div class="div-header text-center">Detected Trackers</div>
     <div class="tab-headers">
       <button :class="{'active-tab': currentTab === 'accesses'}" @click="currentTab = 'accesses'">Access Insights</button>
       <button :class="{'active-tab': currentTab === 'trackers'}" @click="currentTab = 'trackers'">Trackers Summary</button>
@@ -10,18 +11,28 @@
     <div class="tab-content">
       <!-- Trackers Summary Tab -->
       <div v-if="currentTab === 'trackers'" class="trackers-summary">
-        <h1>Trackers Summary</h1>
+        <!-- <h1>Trackers Summary</h1> -->
         <!-- <p><strong>Total Trackers Detected:</strong> <span>{{ totalCount }}</span></p> -->
-        <p><strong>Unique Trackers:</strong> <span>{{ uniqueTrackers }}</span></p>
-        <p><strong>Unique Parent Domains:</strong> <span>{{ uniqueParentDomains }}</span></p>
-        <CircleProgressBar :value="uniqueTrackersCount" :max="uniqueTrackersCount">{{ uniqueTrackersCount }}</CircleProgressBar>
+        <div class="row">
+          <div class="col-12 mt-3 mb-3">
+            <CircleProgressBar :value="uniqueTrackersCount" :max="uniqueTrackersCount">{{ uniqueTrackersCount }}</CircleProgressBar>
+
+          </div>
+          <div class="col-12 ">
+            Unique Trackers: <span class="value float-right">{{ uniqueTrackers }}</span>
+          </div>
+          <div class="col-12">
+           Unique Parent Domains: <span class="value float-right">{{ uniqueParentDomains }}</span>
+
+          </div>
+        </div>
+     
       </div>
 
       <!-- Access Insights Tab -->
       <div v-if="currentTab === 'accesses'" class="access-insights">
-        <h1>Access Insights</h1>
         <div v-if="localStorageData" class="local-storage-data">
-          <h2>Local Storage Data:</h2>
+          <h6>Local Storage Data:</h6>
           <ul>
             <li v-for="(item, index) in parsedLocalStorageData" :key="index" :class="getHighlightClass(item)">
               {{ item }}
@@ -32,7 +43,7 @@
         <p v-else>No data found for this domain.</p>
       </div>
     </div>
-    <div class="open-dashboard-container">
+    <div class="open-dashboard-container open-dashboard">
       <button @click="openDashboard">Open Dashboard</button>
     </div>
   </div>
@@ -151,11 +162,11 @@ const parsedLocalStorageData = computed(() => {
 }
 
 .local-storage-data {
-  background-color: #f4f4f4;
+  /* background-color: #f4f4f4;
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 4px;
-  margin-top: 10px;
+  margin-top: 10px; */
 }
 
 /* High Privacy Concern - Red */
@@ -192,8 +203,8 @@ const parsedLocalStorageData = computed(() => {
   color: #4a4a4a;
   background-color: #f9f9f9;
   max-width: 400px;
-  width: 100%;
-  padding: 20px;
+  width: 262px;
+  padding:15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
@@ -202,18 +213,17 @@ const parsedLocalStorageData = computed(() => {
 .tab-headers {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+  margin: 20px 0px 0px 0px;
   background-color: #007BFF;
-  border-radius: 8px;
 }
 
 .tab-headers button {
   background-color: transparent;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
-  color: white;
+    border: none;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #fff;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -223,21 +233,29 @@ const parsedLocalStorageData = computed(() => {
 }
 
 .tab-headers .active-tab {
-  background-color: white;
+  background-color: #f2f2f2 !important;
   color: #007BFF;
-  border-radius: 8px;
 }
 
-.tab-content {
-  padding: 10px 0;
-}
 
+/* 
 .trackers-summary h1, .access-insights h1 {
   font-size: 22px;
   margin: 0 0 15px 0;
   color: #333;
+} */
+.trackers-summary {
+  background: #6c757d0d;
+  padding: 12px 6px;
+    border-radius: 5px;
+    font-size: 12px;
 }
-
+.local-storage-data{
+  background: #6c757d0d;
+  padding: 12px 6px;
+    border-radius: 5px;
+    font-size: 12px;
+}
 p {
   margin: 10px 0;
   font-size: 16px;
@@ -248,13 +266,12 @@ span {
   font-weight: 600;
 }
 
-.local-storage-data {
+/* .local-storage-data {
   background-color: #e8f0fe;
   border: 1px solid #b6d4fe;
   padding: 15px;
-  border-radius: 8px;
   margin-top: 10px;
-}
+} */
 
 .local-storage-data h2 {
   font-size: 18px;
@@ -279,7 +296,7 @@ span {
 .open-dashboard-container button {
   background-color: #007BFF;
   color: white;
-  padding: 10px 20px;
+  padding: 7px 14px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -290,7 +307,27 @@ span {
   background-color: #0056b3;
 }
 
+.div-header {
+    padding: 10px 0;
+    border-bottom: 1px solid gray;
+    font-family: 'Orbitron', sans-serif;
 
+}
+
+
+.open-dashboard{
+  text-align: center;
+    margin-top: 20px;
+    font-size: 11px;
+}
+
+circle.circle-progress__circle.circle-progress__line--top.circle-progress__line--filled {
+    stroke: #027bff !important;
+}
+.circle-progress__line--filled{
+  stroke: #027bff !important;
+
+}
 </style>
 
 
