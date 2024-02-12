@@ -1,5 +1,6 @@
+console.log("inside randomizing for profile3")
 Object.defineProperty(navigator, "platform", {
-	get: () => "Win32",
+	get: () => "iPhone",
 });
 
 Object.defineProperty(navigator, "plugins", {
@@ -8,6 +9,7 @@ Object.defineProperty(navigator, "plugins", {
 			length: 0,
 			item: () => null,
 			namedItem: () => null,
+			// eslint-disable-next-line @typescript-eslint/no-empty-function
 			refresh: () => {},
 		};
 	},
@@ -23,7 +25,7 @@ Object.defineProperty(navigator, "userAgentData", {
 });
 
 Object.defineProperty(navigator, "languages", {
-	get: () => ["en-US", "en"],
+	get: () =>['fr-FR', 'fr'],
 });
 
 Object.defineProperty(navigator, "deviceMemory", {
@@ -31,7 +33,7 @@ Object.defineProperty(navigator, "deviceMemory", {
 });
 
 Object.defineProperty(navigator, "getBattery", {
-	get: () => () => 0.7,
+	get: () => () => undefined,
 });
 
 Object.defineProperty(navigator, "connection", {
@@ -55,19 +57,19 @@ Object.defineProperty(navigator, "hardwareConcurrency", {
 });
 
 Object.defineProperty(screen, "width", {
-	get: () => 1920,
+	get: () => 375,
 });
 
 Object.defineProperty(screen, "height", {
-	get: () => 1080,
+	get: () => 812 ,
 });
 
 Object.defineProperty(screen, "availWidth", {
-	get: () => 1920,
+	get: () => 375,
 });
 
 Object.defineProperty(screen, "availHeight", {
-	get: () => 1080,
+	get: () => 812 ,
 });
 
 Object.defineProperty(Date.prototype, "getTimezoneOffset", {
@@ -77,7 +79,7 @@ Object.defineProperty(Date.prototype, "getTimezoneOffset", {
 Object.defineProperty(Intl.DateTimeFormat.prototype, "resolvedOptions", {
 	get: () => () => {
 		return {
-			locale: "en-US",
+			locale: "r-FR",
 			calendar: "gregory",
 			numberingSystem: "latn",
 			timeZone: "UTC",

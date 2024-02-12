@@ -1,17 +1,18 @@
 Object.defineProperty(navigator, "platform", {
-	get: () => "Win32",
+	get: () => "Linux",
 });
 
-// Object.defineProperty(navigator, "plugins", {
-// 	get: () => {
-// 		return {
-// 			length: 0,
-// 			item: () => null,
-// 			namedItem: () => null,
-// 			refresh: () => {},
-// 		};
-// 	},
-// });
+Object.defineProperty(navigator, "plugins", {
+	get: () => {
+		return {
+			length: 0,
+			item: () => null,
+			namedItem: () => null,
+			// eslint-disable-next-line @typescript-eslint/no-empty-function
+			refresh: () => {},
+		};
+	},
+});
 
 // Object.defineProperty(navigator, "userAgent", {
 // 	get: () =>

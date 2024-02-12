@@ -2,18 +2,7 @@
 import { createApp } from "vue"
 import TrackerHandlerComponent from "../view/TrackerHandlerComponent.vue"
 
-(() => {
-	function injectScript() {
-		const parent = document.documentElement;
-		const script = document.createElement("script");
-		script.src = chrome.runtime.getURL("r.js");
-		script.async = false;
-		parent.insertBefore(script, parent.firstChild);
-		parent.removeChild(script);
-	}
 
-	injectScript();
-})();
 
 window.addEventListener("load", () => {
 

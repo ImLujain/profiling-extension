@@ -1,7 +1,7 @@
 const DISCONNECT_URL = 'https://raw.githubusercontent.com/disconnectme/disconnect-tracking-protection/master/services.json';
 
 let disconnectList = {}; // Create list to store the retrieved list
-let currentProfile = 'profile1'; // Default profile
+let currentProfile = 'allProfiles'; // Default profile
 
 const userAgents = {
     'profile1': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537',
@@ -15,10 +15,52 @@ const profileScripts = {
     //'profile3': 'profile3.js',
 };
 
+async function getCurrentTabId() {
+    let [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+    });
+    return tab.id;
+}
+
+async function reload() {
+    const tabId = await getCurrentTabId();
+    chrome.tabs.reload(tabId, { bypassCache: true });
+}
+
+function registerProfile1Script(currentProfile) {
+    c =  currentProfile == "profile1"
+    const id = "inject_script_profile1";
+    if (c) {
+        console.log("inside inject script ")
+
+        chrome.scripting.registerContentScripts(
+            [
+                {
+                    id,
+                    matches: ["<all_urls>"],
+                    allFrames: true,
+                    runAt: "document_start",
+                    js: ["profile1_content.js"],
+                },
+            ],
+            () => {
+                reload();
+            }
+        );
+    } else {
+        chrome.scripting.unregisterContentScripts({ ids: [id] }, () => {
+            reload();
+        });
+    }
+}
+
 function registerProfile2Script(currentProfile) {
         c =  currentProfile == "profile2"
 		const id = "inject_script_profile2";
 		if (c) {
+            console.log("inside inject script ")
+
 			chrome.scripting.registerContentScripts(
 				[
 					{
@@ -26,7 +68,7 @@ function registerProfile2Script(currentProfile) {
 						matches: ["<all_urls>"],
 						allFrames: true,
 						runAt: "document_start",
-						js: ["profile2.js"],
+						js: ["profile2_content.js"],
 					},
 				],
 				() => {
@@ -38,7 +80,33 @@ function registerProfile2Script(currentProfile) {
 				reload();
 			});
 		}
+}
 
+function registerProfile3Script(currentProfile) {
+    c =  currentProfile == "profile3"
+    const id = "inject_script_profile3";
+    if (c) {
+        console.log("inside inject script ")
+
+        chrome.scripting.registerContentScripts(
+            [
+                {
+                    id,
+                    matches: ["<all_urls>"],
+                    allFrames: true,
+                    runAt: "document_start",
+                    js: ["profile3_content.js"],
+                },
+            ],
+            () => {
+                reload();
+            }
+        );
+    } else {
+        chrome.scripting.unregisterContentScripts({ ids: [id] }, () => {
+            reload();
+        });
+    }
 }
 
 chrome.storage.local.get(['selectedProfile'], (data) => {
@@ -47,13 +115,26 @@ chrome.storage.local.get(['selectedProfile'], (data) => {
     }
     if (currentProfile == "profile2"){
     registerProfile2Script(currentProfile);}
+    if (currentProfile == "profile1"){
+        registerProfile1Script(currentProfile);}
+        if (currentProfile == "profile3"){
+            registerProfile3Script(currentProfile);}
 });
 
 chrome.storage.onChanged.addListener(function(changes) {
     if (changes.selectedProfile) {
         currentProfile = changes.selectedProfile.newValue;
-        if(currentProfile !== 'allProfiles') {
+        if (currentProfile == "profile1"){
+            registerProfile1Script(currentProfile);
+        }
+        if (currentProfile == "profile2"){
             registerProfile2Script(currentProfile);
+        }
+
+        if (currentProfile == "profile3"){
+            registerProfile3Script(currentProfile);
+        }
+        if(currentProfile !== 'allProfiles') {
             chrome.declarativeNetRequest.updateDynamicRules({
                 addRules: [{
                     "id": 1,

@@ -1,17 +1,19 @@
+console.log("inside randomizing for profile2")
 Object.defineProperty(navigator, "platform", {
 	get: () => "MacIntel",
 });
 
-// Object.defineProperty(navigator, "plugins", {
-// 	get: () => {
-// 		return {
-// 			length: 0,
-// 			item: () => null,
-// 			namedItem: () => null,
-// 			refresh: () => {},
-// 		};
-// 	},
-// });
+Object.defineProperty(navigator, "plugins", {
+	get: () => {
+		return {
+			length: 0,
+			item: () => null,
+			namedItem: () => null,
+			// eslint-disable-next-line @typescript-eslint/no-empty-function
+			refresh: () => {},
+		};
+	},
+});
 
 // Object.defineProperty(navigator, "userAgent", {
 // 	get: () =>
