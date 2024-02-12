@@ -21,13 +21,13 @@
                 "<all_urls>"
             ],
             "js": [
-                "/content.js", "randomize-user-data.js"
+                "/content.js", "r.js"
             ],
             "run_at": "document_start"
         }
     ],
     "web_accessible_resources": [{
-        "resources": ["randomize-user-data.js", "PrivacyGuard-detect-fp-calls.js"],
+        "resources": ["randomize-user-data.js", "PrivacyGuard-detect-fp-calls.js", "r.js", "profile2.js"],
         "matches": ["<all_urls>"]
     }],
     "permissions": [

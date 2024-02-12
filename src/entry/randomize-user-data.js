@@ -15,7 +15,7 @@ const profiles = {
     profile3: {
         screen: { width: 375, height: 812 }, // Example dimensions for an iPhone
         batteryLevel: 0.8, // 80%
-        name: "iPhone X",
+        name: "iPhone X,"
 
     }
 };
@@ -26,12 +26,13 @@ function applyProfileAttributes(profileData) {
     
     // Assuming these functions are adjusted to use profile-specific data
     randomizeBatteryLevel(profileData.batteryLevel);
-    randomizeScreenResolution(profileData.screen.width, profileData.screen.height);
+    //randomizeScreenResolution(profileData.screen.width, profileData.screen.height);
 }
 
 // This function now receives the profile data instead of a boolean
-function toggleRandomization(profile) {
-    if (profiles[profile]) {
+function toggleRandomization(isRandomizationEnabled, profile) {
+    console.log('profile inside toggle :', profile)
+    if (isRandomizationEnabled) {
         console.log(`${profile} randomization enabled`);
         applyProfileAttributes(profiles[profile]);
     } else {
@@ -41,56 +42,52 @@ function toggleRandomization(profile) {
 }
 
 // Adjusted to select specific profiles
+// In yourContentScript.js
+// chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+//     console.log(response.farewell);
+//   });
+
+// Check the selected profile to determine if randomization should be enabled
 chrome.storage.local.get('selectedProfile', function(data) {
-    const profile = data.selectedProfile;
-    console.log('Selected profile:', profile);
-    toggleRandomization(profile);
+    const isRandomizationEnabled = data.selectedProfile !== 'allProfiles';
+    console.log('profile :', data.selectedProfile)
+    toggleRandomization(isRandomizationEnabled, data.selectedProfile);
 });
 
-
-
-// function toggleRandomization(enable) {
-//     if (enable) {
-//         console.log("Randomization enabled");
-//         // Place your randomization enabling code here
-//         randomizeBatteryLevel();
-//         randomizeScreenResolution();
-//     } else {
-//         console.log("Randomization disabled");
-//         // If needed, code to disable randomization or revert any changes
-//     }
-// }
-
-// // Check the selected profile to determine if randomization should be enabled
-// chrome.storage.local.get('selectedProfile', function(data) {
-//     const isRandomizationEnabled = data.selectedProfile !== 'allProfiles';
-//     console.log('profile :', data.selectedProfile)
-//     toggleRandomization(isRandomizationEnabled);
-// });
-
 // Randomize battery level
+
 function randomizeBatteryLevel(battrylevel) {
-    if (navigator.getBattery) {
-        const randomBatteryLevel = battrylevel;
-        const originalGetBattery = navigator.getBattery.bind(navigator);
+    const randomBatteryLevel = battrylevel
+    console.log("Battery level randomized", randomBatteryLevel);
 
-        navigator.getBattery = function() {
-            return originalGetBattery().then(battery => {
-                const newBattery = Object.create(battery);
-                Object.defineProperty(newBattery, 'level', {
-                    get: function() {
-                        return randomBatteryLevel;
-                    },
-                    enumerable: true,
-                    configurable: true
+    const scriptContent = `
+        if (navigator.getBattery) {
+            const originalGetBattery = navigator.getBattery.bind(navigator);
+
+            navigator.getBattery = function() {
+                return originalGetBattery().then(battery => {
+                    const newBattery = Object.create(battery);
+                    Object.defineProperty(newBattery, 'level', {
+                        get: function() {
+                            return ${randomBatteryLevel};
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+                    return newBattery;
                 });
-                return newBattery;
-            });
-        };
+            };
+        }
+    `;
 
-        console.log("Battery level randomized", randomBatteryLevel);
-    }
+    //injectScript(scriptContent);
+    const scriptElement = document.createElement('script');
+    scriptElement.textContent = scriptContent;
+    (document.head || document.documentElement).appendChild(scriptElement);
+    scriptElement.remove();
+    console.log("Battery level randomized", randomBatteryLevel);
 }
+
 
 // Randomize screen resolution
 function randomizeScreenResolution(dimenw, dimenh) {
