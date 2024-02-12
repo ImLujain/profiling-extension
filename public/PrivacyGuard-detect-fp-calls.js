@@ -100,8 +100,6 @@ function saveAccessToLocalStorage(property, domain) {
 }
 
 
-
-
 // Counter to track how many times each property was accessed
 const accessedPropertiesCounter = {};
 
@@ -126,36 +124,72 @@ function getCurrentScriptOrigin() {
     }
 }
 
+function createProxyHandler(handler) {
+    return {
+        get(target, prop, receiver) {
+            // Log the property access or call the handler function
+            console.log(`Property ${prop} has been accessed`);
+            handler(`${target.constructor.name.toLowerCase()}.${String(prop)}`, getCurrentScriptOrigin());
+
+            // Proceed to return the property value
+            return Reflect.get(target, prop, receiver);
+        },
+        // You can add more traps here if needed, for example, to intercept function calls or property settings
+    };
+}
+
 //The function that actually monitor the access to the pre-definded properties 
 function monitorAccess(obj, property, handler) {
-    //console.log(`property ${property}`)
-    const parts = property.split("."); // First we split them to allow for nested properties to be monitord (e.g., navigator.languages).
+    const parts = property.split(".");
     let currentObj = obj;
     for (let i = 0; i < parts.length - 1; i++) {
         currentObj = currentObj[parts[i]];
-        if (!currentObj) return;  // exit sfter last part 
+        if (!currentObj) return; // Exit if any part of the path is undefined
     }
     const propName = parts[parts.length - 1];
     const originalValue = currentObj[propName];
 
-    if (typeof originalValue === "function") {  // Special handling for functions
+    if (typeof originalValue === 'function') {
         currentObj[propName] = function(...args) {
             const origin = getCurrentScriptOrigin();
-            handler(property, origin); // pass origin as an argument to handler
-            return originalValue.apply(this, args);
+            handler(`${property}`, origin); // Log the access
+            
+            try {
+                const result = originalValue.apply(this, args);
+                // Check if the function returns a promise
+                if (result instanceof Promise) {
+                    return result.then(value => {
+                        // Log promise resolution or perform additional actions
+                        console.log(`${property} promise resolved`);
+                        return value;
+                    }).catch(error => {
+                        // Log promise rejection or perform additional actions
+                        console.log(`${property} promise rejected`);
+                        throw error;
+                    });
+                }
+                return result;
+            } catch (error) {
+                console.error(`Error calling ${property}:`, error);
+                throw error; // Re-throw the error after logging
+            }
         };
     } else {
+        let value = originalValue;
         Object.defineProperty(currentObj, propName, {
             get: function() {
                 const origin = getCurrentScriptOrigin();
-               
-                handler(property, origin); // pass origin as an argument to handler
-
-                return originalValue;
-            }
+                handler(`${property}`, origin); // Log the access
+                return value;
+            },
+            set: function(newValue) {
+                value = newValue;
+            },
+            configurable: true
         });
     }
 }
+
 
 
 // Function to set up monitoring for all properties in deviceInfoProperties
@@ -164,10 +198,6 @@ function setupDeviceInfoMonitoring() {
         monitorAccess(window, prop, (accessedProperty, origin) => {
             console.log(`Accessed: ${accessedProperty} from: ${origin}`);
 
-            // Increment the accessed counter
-            //accessedPropertiesCounter[accessedProperty] = (accessedPropertiesCounter[accessedProperty] || 0) + 1;
-
-            // Save accessed property to local storage
             saveAccessToLocalStorage(accessedProperty, getDomain());
         });
     });

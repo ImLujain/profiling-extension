@@ -27,7 +27,7 @@
         }
     ],
     "web_accessible_resources": [{
-        "resources": ["randomize-user-data.js", "PrivacyGuard-detect-fp-calls.js"],
+        "resources": ["randomize-user-data.js", "PrivacyGuard-detect-fp-calls.js", "profile2.js","profile1.js", "profile3.js"],
         "matches": ["<all_urls>"]
     }],
     "permissions": [

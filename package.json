@@ -12,6 +12,7 @@
   "dependencies": {
     "chart.js": "^4.4.0",
     "circle-progress.vue": "^3.1.0",
+    "element-plus": "^2.5.3",
     "vue": "^3.2.13",
     "vue3-m-circle-progress-bar": "^0.6.1"
   },

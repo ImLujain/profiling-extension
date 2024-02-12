@@ -2,6 +2,8 @@
 import { createApp } from "vue"
 import TrackerHandlerComponent from "../view/TrackerHandlerComponent.vue"
 
+
+
 window.addEventListener("load", () => {
 
     //append app
@@ -15,15 +17,16 @@ window.addEventListener("load", () => {
 
 })
 
-const randomizeGeneralDataScript = document.createElement('script');
-randomizeGeneralDataScript.src = chrome.runtime.getURL('randomize-user-data.js');
-(document.head || document.documentElement).appendChild(randomizeGeneralDataScript);
-randomizeGeneralDataScript.remove()
+// const randomizeGeneralDataScript = document.createElement('script');
+// randomizeGeneralDataScript.src = chrome.runtime.getURL('r.js');
+// (document.head || document.documentElement).appendChild(randomizeGeneralDataScript);
+// randomizeGeneralDataScript.remove()
 
 const detectFBScript = document.createElement('script');
 detectFBScript.src = chrome.runtime.getURL('PrivacyGuard-detect-fp-calls.js');
 (document.head || document.documentElement).appendChild(detectFBScript);
 detectFBScript.remove()
+
 
 
 

@@ -129,8 +129,6 @@ function monitorAccess(obj, property, handler) {
             get: function() {
                 const origin = getCurrentScriptOrigin();
                 handler(property, origin); // pass origin as an argument to handler
-                //console.log("original value", originalValue)
-
                 return originalValue;
             }
         });
@@ -155,25 +153,6 @@ function setupDeviceInfoMonitoring() {
         count: accessedPropertiesCounter[accessedProperty] // Assuming this is the counter
     };
 
-    //chrome.storage.local.set({accessedProperty,origin, accessedPropertiesCounter});
-    
-    //TODO: map with key of accceseedprop(lang): value:counter
-    //defined Listner that return the map
-    // chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    //         if (message.action === "get-property-accessed-count") {
-    //             // Handle the message
-    //             console.log("background got the message from content")
-    //             console.log("Property Accessed:", message.property, "Origin:", message.origin);
-    //             sendResponse({message})
-    //         }
-    //     });
-      // end of TODO  
-    
-    // chrome.runtime.sendMessage(message, function(response) {
-    //     // Handle the response or do something after sending the message
-    //     console.log("message",message)
-    //     console.log("Response from background:", response);
-    // });
            
         });
     });
@@ -186,30 +165,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     if (message.action === "get-property-accessed-count") {
-//         console.log("Received message from background or popup listener:", message.property);
-//         sendResponse({ message });
-//     }
-// });
-// function sendMessageToBackground(property, origin) {
-//     // Prepare the message object
-//     const message = {
-//         action: "propertyAccessed",
-//         property: property,
-//         origin: origin.href, // Assuming origin is a URL object
-//         count: accessedPropertiesCounter[property] // Assuming this is the counter
-//     };
 
-//     // Send the message to the background script
-//     if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
-//         chrome.runtime.sendMessage(message, function(response) {
-//             // Handle the response or do something after sending the message
-//             console.log("Response from background:", response);
-//         });
-//     }
-// }
-// Start the monitoring process
-                                
 setupDeviceInfoMonitoring();
 

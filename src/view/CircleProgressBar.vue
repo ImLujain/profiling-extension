@@ -50,7 +50,7 @@ const props = defineProps({
   colorFilled: {
     type: String,
     required: false,
-    default: '#FF5533'
+    default: '#027bff'
   },
 
   colorUnfilled: {
