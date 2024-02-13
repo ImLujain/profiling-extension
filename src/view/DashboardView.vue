@@ -434,7 +434,6 @@ img {
 
 .cover {
     height: 892px;
-
 }
 </style>
 
