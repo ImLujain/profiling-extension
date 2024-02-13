@@ -134,9 +134,12 @@ function loadTrackersForProfile() {
         }
     });
     var profiletest = ['profile1', 'profile2', 'profile3'];
+    
     if (selectedProfile != 'allProfiles') {
         profiletest = [selectedProfile];
     }
+    console.log(selectedProfile)
+
     console.log('profiletest')
 
     console.log(profiletest)
