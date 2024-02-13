@@ -1,81 +1,81 @@
 <template>
     <div>
-    <div class="row cover">
-        <div id="sidbar" class="col-2 ">
-            <div class="div-header text-center">Detected Trackers</div>
-            <ul>
-                <li> <img src="./../../public/dashboard.png" />
-                    <p>Dashboar</p>
-                </li>
-                <li><img src="./../../public/about.png" />
-                    <p>About us </p>
-                </li>
-            </ul>
-        </div>
+        <div class="row cover">
+            <div id="sidbar" class="col-2 ">
+                <div class="div-header text-center">Detected Trackers</div>
+                <ul>
+                    <li> <img src="./../../public/dashboard.png" />
+                        <p>Dashboar</p>
+                    </li>
+                    <li><img src="./../../public/about.png" />
+                        <p>About us </p>
+                    </li>
+                </ul>
+            </div>
 
-        <div class="col-9 ">
-            <!-- main container -->
-            <div class="div-header  color-047488 text-left pl-3">Dashboard</div>
-            <!-- profile div-->
-            <div id="content" class="mt-3">
-                <div class=" row col-4">
-                    <label for="profileSelect">Select Profile:</label>
-                    <select id="profileSelect" class="form-control">
-                        <option value="allProfiles" selected>All Profiles</option>
-                        <option value="profile1">Windows Desktop</option>
-                        <option value="profile2">MacBook Air</option>
-                        <option value="profile3">iPhone X</option>
-                    </select>
-                </div>
-
-                <!-- The div and row that should hold both the table and chart -->
-                <div class="row mb-4">
-                    <div id="table-info">
-
-                        <!-- Combined canvas div -->
-                        <div class="col-lg-12 mt-3">
-                            <canvas id="topTrackersChart"></canvas>
-                        </div>
-
-                        <!-- Table div -->
-                        <div class="col-lg-12">
-                            <div class="table-responsive">
-                                <table id="trackerTable" class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tracker Domain</th>
-                                            <th>Parent Domain</th>
-                                            <th>Timestamp</th>
-                                            <th>Category</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Table rows will be inserted here dynamically -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- Pagination for the table -->
-                            <nav aria-label="Table pagination">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="text-center mt-4">
-                            <button @click="clearStoredData" id="clearData" class="btn btn-primary">Clear Data</button>
-                        </div>
+            <div class="col-9 ">
+                <!-- main container -->
+                <div class="div-header  color-047488 text-left pl-3">Dashboard</div>
+                <!-- profile div-->
+                <div id="content" class="mt-3">
+                    <div class=" row col-4">
+                        <label for="profileSelect">Select Profile:</label>
+                        <select id="profileSelect" class="form-control">
+                            <option value="allProfiles" selected>All Profiles</option>
+                            <option value="profile1">Windows Desktop</option>
+                            <option value="profile2">MacBook Air</option>
+                            <option value="profile3">iPhone X</option>
+                        </select>
                     </div>
-                    <div id="no-result"><img src="./../../public/no-result.png" /> No trackers detected.</div>
+
+                    <!-- The div and row that should hold both the table and chart -->
+                    <div class="row mb-4">
+                        <div id="table-info">
+
+                            <!-- Combined canvas div -->
+                            <div class="col-lg-12 mt-3">
+                                <canvas id="topTrackersChart"></canvas>
+                            </div>
+
+                            <!-- Table div -->
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <table id="trackerTable" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tracker Domain</th>
+                                                <th>Parent Domain</th>
+                                                <th>Timestamp</th>
+                                                <th>Category</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Table rows will be inserted here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Pagination for the table -->
+                                <nav aria-label="Table pagination">
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button @click="clearStoredData" id="clearData" class="btn btn-primary">Clear Data</button>
+                            </div>
+                        </div>
+                        <div id="no-result"><img src="./../../public/no-result.png" /> No trackers detected.</div>
+                    </div>
+
+
                 </div>
-
-
             </div>
         </div>
-    </div>
     </div>
 </template>
 
@@ -383,7 +383,6 @@ img {
 
 
 #sidbar {
-
     display: inline-block;
     background: #f1f1f1;
 }
@@ -436,5 +435,6 @@ img {
 .cover {
     height: 892px;
 
-}</style>
+}
+</style>
 
