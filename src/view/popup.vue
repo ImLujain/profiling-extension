@@ -31,17 +31,21 @@
 
       <!-- Access Insights Tab -->
       <div v-if="currentTab === 'accesses'" class="access-insights">
-        <div v-if="localStorageData" class="local-storage-data">
-          <h6>Local Storage Data:</h6>
-          <ul>
-            <li v-for="(item, index) in parsedLocalStorageData" :key="index" :class="getHighlightClass(item)">
-              {{ item }}
-          </li>
+    <div v-if="localStorageData && localStorageData.value !== 'No data found for this key.'" class="local-storage-data">
+      <h6>Local Storage Data:</h6>
+      <ul>
+        <li v-for="(item, index) in parsedLocalStorageData" :key="index">
+          {{ item.property }} - Accessed by: 
+          <span v-if="item.isThirdParty.includes(true) && item.isThirdParty.includes(false)">Both 3rd Party and Local</span>
+          <span v-else-if="item.isThirdParty.includes(true)">3rd Party</span>
+          <span v-else>Local</span>
+        </li>
+      </ul>
+    </div>
+    <p v-else>No data found for this domain.</p>
+</div>
 
-          </ul>
-        </div>
-        <p v-else>No data found for this domain.</p>
-      </div>
+
     </div>
     <div class="open-dashboard-container open-dashboard">
       <button @click="openDashboard">Open Dashboard</button>
@@ -53,12 +57,19 @@
 import CircleProgressBar from './CircleProgressBar.vue';
 import { ref, watch, computed } from "vue";
 
+
+
+
 const currentTab = ref('trackers');
 const uniqueTrackersCount = ref(0);
 const totalCount = ref(0);
 const uniqueTrackers = ref(0);
 const uniqueParentDomains = ref(0);
-let localStorageData = ref<string | null>(null);
+//let localStorageData = ref<string | null>(null);
+//const localStorageData = ref('');
+const localStorageData = ref('') as unknown as { value: string };
+
+
 
 // Function to fetch data from the webpage's local storage
 const fetchLocalStorageData = () => {
@@ -142,13 +153,21 @@ const openDashboard = () => {
 const parsedLocalStorageData = computed(() => {
   if (localStorageData.value) {
     try {
-      return JSON.parse(localStorageData.value);
+      const data = JSON.parse(localStorageData.value);
+      return data.map((item: { isThirdParty: any; }) => ({
+        ...item,
+        isThirdParty: Array.isArray(item.isThirdParty) ? item.isThirdParty : [],
+      }));
     } catch (e) {
-      return [localStorageData.value]; // If not JSON, return as single item array
+      console.error("Error parsing localStorageData:", e);
+      return []; // Return an empty array if parsing fails
     }
   }
   return [];
 });
+
+
+
 </script>
 
 <style scoped>
