@@ -84,20 +84,40 @@ function getDomain() {
     return window.location.hostname;
 }
 
-function saveAccessToLocalStorage(property, domain) {
+function saveAccessToLocalStorage(property, domain, isThirdParty) {
     const localStorageKey = `accessedProperties_${domain}`;
     let accessedProperties = JSON.parse(localStorage.getItem(localStorageKey)) || [];
 
     console.log(`Current accessed properties for ${domain}:`, accessedProperties);
 
-    if (!accessedProperties.includes(property)) {
-        accessedProperties.push(property);
-        localStorage.setItem(localStorageKey, JSON.stringify(accessedProperties));
-        console.log(`Updated accessed properties for ${domain}:`, accessedProperties);
+    // Attempt to find the property in the existing list
+    let propertyObject = accessedProperties.find(item => item.property === property);
+
+    if (!propertyObject) {
+        // If the property doesn't exist, create a new entry with isThirdParty as an array
+        propertyObject = { property, isThirdParty: [isThirdParty] };
+        accessedProperties.push(propertyObject);
     } else {
-        console.log(`Property ${property} already stored for domain ${domain}`);
+        // Ensure isThirdParty is treated as an array, correcting it if necessary
+        if (!Array.isArray(propertyObject.isThirdParty)) {
+            propertyObject.isThirdParty = [];
+        }
+
+        // Now safely use .includes() as isThirdParty is guaranteed to be an array
+        if (!propertyObject.isThirdParty.includes(isThirdParty)) {
+            propertyObject.isThirdParty.push(isThirdParty);
+        }
     }
+
+    // Update local storage
+    localStorage.setItem(localStorageKey, JSON.stringify(accessedProperties));
+
+    console.log(`Updated accessed properties for ${domain}:`, accessedProperties);
 }
+
+
+
+
 
 
 // Counter to track how many times each property was accessed
@@ -105,24 +125,26 @@ const accessedPropertiesCounter = {};
 
 // Function to get the origin (source) of the current script to detect its source 
 function getCurrentScriptOrigin() {
+    const pageOrigin = window.location.origin;
     if (document.currentScript) {
         const src = document.currentScript.src;
-        // console.log(`source ${src}`)
         if (src) {
             try {
                 const url = new URL(src);
-                // return url.origin;
-                return url;
+                // Check if the script's origin is different from the page's origin
+                const isThirdParty = url.origin !== pageOrigin;
+                return { url: url.toString(), isThirdParty: isThirdParty };
             } catch (e) {
-                return "Unknown src";
+                return { url: "Unknown src", isThirdParty: false };
             }
         } else {
-            return "Inline script maybe ?";
+            return { url: "Inline script maybe ?", isThirdParty: false };
         }
     } else {
-        return "No document currentscript result :c";
+        return { url: "No document.currentScript result :c", isThirdParty: false };
     }
 }
+
 
 function createProxyHandler(handler) {
     return {
@@ -197,8 +219,12 @@ function setupDeviceInfoMonitoring() {
     deviceInfoProperties.forEach(prop => {
         monitorAccess(window, prop, (accessedProperty, origin) => {
             console.log(`Accessed: ${accessedProperty} from: ${origin}`);
+            // Inside monitorAccess or a similar place where you log the access
+            const originInfo = getCurrentScriptOrigin();
+            saveAccessToLocalStorage(accessedProperty, getDomain(), originInfo.isThirdParty);
 
-            saveAccessToLocalStorage(accessedProperty, getDomain());
+
+            //saveAccessToLocalStorage(accessedProperty, getDomain());
         });
     });
 }

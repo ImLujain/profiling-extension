@@ -3,13 +3,13 @@ Object.defineProperty(navigator, "platform", {
 });
 
 Object.defineProperty(navigator, "plugins", {
-	get: () => {
-		return {
-			length: 0,
-			item: () => null,
-			namedItem: () => null,
-			// eslint-disable-next-line @typescript-eslint/no-empty-function
-			refresh: () => {},
+get: () => {
+return {
+length: 0,
+item: () => null,
+namedItem: () => null,
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+refresh: () => {},
 		};
 	},
 });
@@ -39,9 +39,9 @@ Object.defineProperty(navigator, "connection", {
 	get: () => undefined,
 });
 
-Object.defineProperty(navigator.keyboard, "getLayoutMap", {
-	get: () => () => undefined,
-});
+// Object.defineProperty(navigator.keyboard, "getLayoutMap", {
+// 	get: () => () => undefined,
+// });
 
 Object.defineProperty(navigator, "mediaDevices", {
 	get: () => undefined,

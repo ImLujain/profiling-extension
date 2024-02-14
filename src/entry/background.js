@@ -25,7 +25,7 @@ async function getCurrentTabId() {
 
 async function reload() {
     const tabId = await getCurrentTabId();
-    chrome.tabs.reload(tabId, { bypassCache: true });
+   //chrome.tabs.reload(tabId, { bypassCache: true });
 }
 
 function registerProfile1Script(currentProfile) {
@@ -113,28 +113,23 @@ chrome.storage.local.get(['selectedProfile'], (data) => {
     if (data.selectedProfile) {
         currentProfile = data.selectedProfile;
     }
-    if (currentProfile == "profile2"){
-    registerProfile2Script(currentProfile);}
-    if (currentProfile == "profile1"){
-        registerProfile1Script(currentProfile);}
-        if (currentProfile == "profile3"){
-            registerProfile3Script(currentProfile);}
+    if (currentProfile != "profile2"){
+        registerProfile1Script(currentProfile);
+        registerProfile2Script(currentProfile);
+        registerProfile3Script(currentProfile);
+
+    }
 });
 
 chrome.storage.onChanged.addListener(function(changes) {
     if (changes.selectedProfile) {
         currentProfile = changes.selectedProfile.newValue;
-        if (currentProfile == "profile1"){
-            registerProfile1Script(currentProfile);
-        }
-        if (currentProfile == "profile2"){
-            registerProfile2Script(currentProfile);
-        }
 
-        if (currentProfile == "profile3"){
-            registerProfile3Script(currentProfile);
-        }
         if(currentProfile !== 'allProfiles') {
+            registerProfile1Script(currentProfile);
+            registerProfile2Script(currentProfile);
+            registerProfile3Script(currentProfile);
+
             chrome.declarativeNetRequest.updateDynamicRules({
                 addRules: [{
                     "id": 1,

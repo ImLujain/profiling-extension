@@ -4,13 +4,13 @@ Object.defineProperty(navigator, "platform", {
 });
 
 Object.defineProperty(navigator, "plugins", {
-	get: () => {
-		return {
-			length: 0,
-			item: () => null,
-			namedItem: () => null,
-			// eslint-disable-next-line @typescript-eslint/no-empty-function
-			refresh: () => {},
+get: () => {
+return {
+length: 0,
+item: () => null,
+namedItem: () => null,
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+refresh: () => {},
 		};
 	},
 });
@@ -19,6 +19,11 @@ Object.defineProperty(navigator, "plugins", {
 // 	get: () =>
 // 		"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0",
 // });
+
+Object.defineProperty(navigator, "userAgent", {
+	get: () =>
+		"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0",
+});
 
 Object.defineProperty(navigator, "userAgentData", {
 	get: () => undefined,
@@ -40,9 +45,9 @@ Object.defineProperty(navigator, "connection", {
 	get: () => undefined,
 });
 
-Object.defineProperty(navigator.keyboard, "getLayoutMap", {
-	get: () => () => undefined,
-});
+// Object.defineProperty(navigator.keyboard, "getLayoutMap", {
+// 	get: () => () => undefined,
+// });
 
 Object.defineProperty(navigator, "mediaDevices", {
 	get: () => undefined,
