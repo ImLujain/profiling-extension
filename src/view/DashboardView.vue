@@ -10,6 +10,9 @@
                     <li><img src="./../../public/about.png" />
                         <p>About us </p>
                     </li>
+                    <li><img src="./../../public/change.png" />
+                        <p>Chnage profile</p>
+                    </li>
                 </ul>
             </div>
 
@@ -405,7 +408,7 @@ img {
 
 #sidbar ul {
     padding: 0px;
-    text-align: center;
+    text-align: left;
 }
 
 .color-047488 {
