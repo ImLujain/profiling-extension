@@ -103,7 +103,6 @@
 </template>
 
 <script setup>
-
 import { onMounted } from 'vue';
 onMounted(() => {
     populateFingerprintInfo();
@@ -147,6 +146,7 @@ onMounted(() => {
 
 });
 
+//This function that reads your browser fingerprint
 async function populateFingerprintInfo() {
     document.getElementById('fingerprint-platform').textContent = navigator.platform;
     document.getElementById('fingerprint-plugins').textContent = `${navigator.plugins.length} plugins`;
@@ -192,6 +192,8 @@ function populateDateTimeFormat() {
     const dateTimeFormat = new Intl.DateTimeFormat('default', options).format(new Date());
     document.getElementById('fingerprint-dateTimeFormat').textContent = dateTimeFormat;
 }
+
+
 
 let topTrackersChartInstance = null;
 function loadTrackersForProfile() {
