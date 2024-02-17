@@ -2,7 +2,7 @@
     <div>
         <div class="row cover">
             <div id="sidbar" class="col-2 ">
-                <div class="div-header text-center">Detected Trackers</div>
+                <div class="div-header text-center">Privacy Guard</div>
                 <ul>
                     <li> <img src="./../../public/dashboard.png" />
                         <p>Dashboar</p>
@@ -74,8 +74,28 @@
 
 
                 </div>
+                <div id="fingerprint-info" class="mt-3">
+    <div class="div-header color-047488 text-left pl-3">Browser Fingerprint</div>
+    <ul>
+        <li>Platform: <span id="fingerprint-platform"></span></li>
+        <li>Plugins: <span id="fingerprint-plugins"></span></li>
+        <li>User Agent: <span id="fingerprint-userAgent"></span></li>
+        <li>Languages: <span id="fingerprint-languages"></span></li>
+        <li>Device Memory: <span id="fingerprint-deviceMemory"></span></li>
+        <li>Battery: <span id="fingerprint-battery"></span></li>
+        <!-- <li>Connection: <span id="fingerprint-connection"></span></li> -->
+        <li>Media Devices: <span id="fingerprint-mediaDevices"></span></li>
+        <li>Mime Types: <span id="fingerprint-mimeTypes"></span></li>
+        <li>Hardware Concurrency: <span id="fingerprint-hardwareConcurrency"></span></li>
+        <li>Screen Resolution: <span id="fingerprint-screenResolution"></span></li>
+        <li>Timezone Offset: <span id="fingerprint-timezoneOffset"></span></li>
+        <li>Date Time Format: <span id="fingerprint-dateTimeFormat"></span></li>
+    </ul>
+</div>
             </div>
+
         </div>
+
     </div>
 </template>
 
@@ -83,6 +103,7 @@
 
 import { onMounted } from 'vue';
 onMounted(() => {
+    populateFingerprintInfo();
 
 
     const profileSelect = document.getElementById('profileSelect');
@@ -122,6 +143,52 @@ onMounted(() => {
     loadTrackersForProfile();
 
 });
+
+async function populateFingerprintInfo() {
+    document.getElementById('fingerprint-platform').textContent = navigator.platform;
+    document.getElementById('fingerprint-plugins').textContent = `${navigator.plugins.length} plugins`;
+    document.getElementById('fingerprint-userAgent').textContent = navigator.userAgent || 'Not available';
+    document.getElementById('fingerprint-languages').textContent = navigator.languages.join(', ');
+    document.getElementById('fingerprint-deviceMemory').textContent = navigator.deviceMemory || 'Not available';
+    await populateBatteryInfo(); // Asynchronously populate battery info
+    //document.getElementById('fingerprint-connection').textContent = navigator.connection ? JSON.stringify(navigator.connection) : 'Not available';
+    document.getElementById('fingerprint-mediaDevices').textContent = navigator.mediaDevices ? 'Accessible' : 'Not accessible';
+    document.getElementById('fingerprint-mimeTypes').textContent = `${navigator.mimeTypes.length} mime types`;
+    document.getElementById('fingerprint-hardwareConcurrency').textContent = navigator.hardwareConcurrency;
+    document.getElementById('fingerprint-screenResolution').textContent = `${screen.width}x${screen.height}`;
+    populateTimezoneOffset();
+    populateDateTimeFormat();
+}
+
+async function populateBatteryInfo() {
+    if ('getBattery' in navigator) {
+        try {
+            const battery = await navigator.getBattery();
+            const batteryLevel = Math.round(battery.level * 100) + '%';
+            const chargingStatus = battery.charging ? 'charging' : 'not charging';
+            document.getElementById('fingerprint-battery').textContent = `Level: ${batteryLevel}, Status: ${chargingStatus}`;
+        } catch (error) {
+            document.getElementById('fingerprint-battery').textContent = 'Battery info not accessible';
+            console.error('Error accessing battery info:', error);
+        }
+    } else {
+        document.getElementById('fingerprint-battery').textContent = 'Battery API not supported';
+    }
+}
+
+function populateTimezoneOffset() {
+    const offset = new Date().getTimezoneOffset();
+    const offsetHours = Math.floor(Math.abs(offset) / 60);
+    const offsetMinutes = Math.abs(offset) % 60;
+    const sign = offset > 0 ? "-" : "+";
+    document.getElementById('fingerprint-timezoneOffset').textContent = `UTC ${sign}${String(offsetHours).padStart(2, '0')}:${String(offsetMinutes).padStart(2, '0')}`;
+}
+
+function populateDateTimeFormat() {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateTimeFormat = new Intl.DateTimeFormat('default', options).format(new Date());
+    document.getElementById('fingerprint-dateTimeFormat').textContent = dateTimeFormat;
+}
 
 let topTrackersChartInstance = null;
 function loadTrackersForProfile() {
