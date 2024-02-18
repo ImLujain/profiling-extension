@@ -73,11 +73,8 @@
                             </div>
                         </div>
                         <div id="no-result"><img src="./../../public/no-result.png" /> No trackers detected.</div>
-                    </div>
 
-
-                </div>
-                <div id="fingerprint-info" class="mt-3">
+                        <div id="fingerprint-info" class="col-9 mt-3">
     <div class="div-header color-047488 text-left pl-3">Browser Fingerprint</div>
     <ul>
         <li>Platform: <span id="fingerprint-platform"></span></li>
@@ -95,6 +92,11 @@
         <li>Date Time Format: <span id="fingerprint-dateTimeFormat"></span></li>
     </ul>
 </div>
+                    </div>
+
+
+                </div>
+
             </div>
 
         </div>
@@ -103,6 +105,7 @@
 </template>
 
 <script setup>
+
 import { onMounted } from 'vue';
 onMounted(() => {
     populateFingerprintInfo();
@@ -146,7 +149,7 @@ onMounted(() => {
 
 });
 
-//This function that reads your browser fingerprint
+//This function that reads your browser fingerprint to show them 
 async function populateFingerprintInfo() {
     document.getElementById('fingerprint-platform').textContent = navigator.platform;
     document.getElementById('fingerprint-plugins').textContent = `${navigator.plugins.length} plugins`;
