@@ -31,19 +31,26 @@
 
       <!-- Access Insights Tab -->
       <div v-if="currentTab === 'accesses'" class="access-insights">
-    <div v-if="localStorageData && localStorageData.value !== 'No data found for this key.'" class="local-storage-data">
-      <h6>Local Storage Data:</h6>
-      <ul>
-        <li v-for="(item, index) in parsedLocalStorageData" :key="index">
-          {{ item.property }} - Accessed by: 
-          <span v-if="item.isThirdParty.includes(true) && item.isThirdParty.includes(false)">Both 3rd Party and Local</span>
-          <span v-else-if="item.isThirdParty.includes(true)">3rd Party</span>
-          <span v-else>Local</span>
-        </li>
-      </ul>
-    </div>
-    <p v-else>No data found for this domain.</p>
+  <div v-if="localStorageData && localStorageData.value !== 'No data found for this key'" class="local-storage-data">
+    <h6>Local Storage Data:</h6>
+    <ul>
+      <li v-for="(item, index) in parsedLocalStorageData" :key="index" class="access-item">
+        {{ item.property }} - Accessed by:
+        <span v-if="item.isThirdParty.includes(true) && item.isThirdParty.includes(false)" class="access-type">
+          Both <i class=""></i> 3rd Party and <i class=""></i> Local
+        </span>
+        <span v-else-if="item.isThirdParty.includes(true)" class="access-type access-type-third-party">
+          <i class=""></i> 3rd Party
+        </span>
+        <span v-else class="access-type access-type-local">
+          <i class=""></i> Local
+        </span>
+      </li>
+    </ul>
+  </div>
+  <p v-else>No data found for this domain.</p>
 </div>
+
 
 
     </div>
@@ -188,6 +195,37 @@ const parsedLocalStorageData = computed(() => {
   margin-top: 10px; */
 }
 
+.tab-headers button {
+  background-color: #007BFF;
+  color: #FFFFFF;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: bold;
+  border: none;
+}
+
+.local-storage-data i {
+  margin-right: 5px;
+}
+.fas.fa-users {
+  color: #ff5722; /* 3rd Party Icon Color */
+}
+.fas.fa-user {
+  color: #4caf50; /* Local Icon Color */
+}
+
+.local-storage-data li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 8px;
+}
+
+
 /* High Privacy Concern - Red */
 .local-storage-data li.highlight-red {
   background-color: rgba(236, 80, 69, 0.5);; /* Red with opacity */
@@ -227,6 +265,47 @@ const parsedLocalStorageData = computed(() => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
+}
+
+.access-insights h6 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.local-storage-data ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.access-item {
+  background-color: #f7f7f7;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.access-type {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.access-type-third-party i,
+.access-type-local i {
+  margin-right: 5px;
+}
+
+.access-type-third-party {
+  color: #d9534f; /* Adjust the color to suit your design */
+}
+
+.access-type-local {
+  color: #5cb85c; /* Adjust the color to suit your design */
 }
 
 .tab-headers {
