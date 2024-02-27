@@ -116,10 +116,6 @@ function saveAccessToLocalStorage(property, domain, isThirdParty) {
 }
 
 
-
-
-
-
 // Counter to track how many times each property was accessed
 const accessedPropertiesCounter = {};
 
@@ -212,8 +208,6 @@ function monitorAccess(obj, property, handler) {
     }
 }
 
-
-
 // Function to set up monitoring for all properties in deviceInfoProperties
 function setupDeviceInfoMonitoring() {
     deviceInfoProperties.forEach(prop => {
@@ -222,8 +216,6 @@ function setupDeviceInfoMonitoring() {
             // Inside monitorAccess or a similar place where you log the access
             const originInfo = getCurrentScriptOrigin();
             saveAccessToLocalStorage(accessedProperty, getDomain(), originInfo.isThirdParty);
-
-
             //saveAccessToLocalStorage(accessedProperty, getDomain());
         });
     });

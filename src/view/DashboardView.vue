@@ -21,7 +21,12 @@
                 <div class="div-header  color-047488 text-left pl-3">Dashboard</div>
                 <!-- profile div-->
                 <div id="content" class="mt-3">
-                    <div class=" row col-4">
+                   
+
+                    <!-- The div and row that should hold both the table and chart -->
+                    <div class="row mb-4">
+                        <div id="table-info" class=" col-lg-6">
+                            <div class=" col-12 col-4">
                         <label for="profileSelect">Select Profile:</label>
                         <select id="profileSelect" class="form-control">
                             <option value="allProfiles" selected>All Profiles</option>
@@ -31,17 +36,13 @@
                         </select>
                     </div>
 
-                    <!-- The div and row that should hold both the table and chart -->
-                    <div class="row mb-4">
-                        <div id="table-info">
-
                             <!-- Combined canvas div -->
-                            <div class="col-lg-12 mt-3">
+                            <div class=" mt-3">
                                 <canvas id="topTrackersChart"></canvas>
                             </div>
 
                             <!-- Table div -->
-                            <div class="col-lg-12">
+                            <div >
                                 <div class="table-responsive">
                                     <table id="trackerTable" class="table">
                                         <thead>
@@ -72,9 +73,9 @@
                                 <button @click="clearStoredData" id="clearData" class="btn btn-primary">Clear Data</button>
                             </div>
                         </div>
-                        <div id="no-result"><img src="./../../public/no-result.png" /> No trackers detected.</div>
+                        <!-- <div id="no-result"><img src="./../../public/no-result.png" /> No trackers detected.</div> -->
 
-                        <div id="fingerprint-info" class="col-9 mt-3">
+                        <div id="fingerprint-info" class="col-6 mt-3">
     <div class="div-header color-047488 text-left pl-3">Browser Fingerprint</div>
     <ul>
         <li>Platform: <span id="fingerprint-platform"></span></li>
