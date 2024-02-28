@@ -21,28 +21,28 @@
                 <div class="div-header  color-047488 text-left pl-3">Dashboard</div>
                 <!-- profile div-->
                 <div id="content" class="mt-3">
-                   
+
 
                     <!-- The div and row that should hold both the table and chart -->
                     <div class="row mb-4">
-                        <div id="table-info" class=" col-lg-6">
+                        <div class=" col-lg-6">
                             <div class=" col-12 col-4">
-                        <label for="profileSelect">Select Profile:</label>
-                        <select id="profileSelect" class="form-control">
-                            <option value="allProfiles" selected>All Profiles</option>
-                            <option value="profile1">Windows Desktop</option>
-                            <option value="profile2">MacBook Air</option>
-                            <option value="profile3">iPhone X</option>
-                        </select>
-                    </div>
-
+                                <label for="profileSelect">Select Profile:</label>
+                                <select id="profileSelect" class="form-control">
+                                    <option value="allProfiles" selected>All Profiles</option>
+                                    <option value="profile1">Windows Desktop</option>
+                                    <option value="profile2">MacBook Air</option>
+                                    <option value="profile3">iPhone X</option>
+                                </select>
+                            </div>
+<div  id="table-info"  >
                             <!-- Combined canvas div -->
                             <div class=" mt-3">
                                 <canvas id="topTrackersChart"></canvas>
                             </div>
 
                             <!-- Table div -->
-                            <div >
+                            <div>
                                 <div class="table-responsive">
                                     <table id="trackerTable" class="table">
                                         <thead>
@@ -73,26 +73,28 @@
                                 <button @click="clearStoredData" id="clearData" class="btn btn-primary">Clear Data</button>
                             </div>
                         </div>
-                        <!-- <div id="no-result"><img src="./../../public/no-result.png" /> No trackers detected.</div> -->
+                        <div id="no-result"><img src="./../../public/no-result.png" /> No trackers detected.</div>
+                    </div>
+                     
 
                         <div id="fingerprint-info" class="col-6 mt-3">
-    <div class="div-header color-047488 text-left pl-3">Browser Fingerprint</div>
-    <ul>
-        <li>Platform: <span id="fingerprint-platform"></span></li>
-        <li>Plugins: <span id="fingerprint-plugins"></span></li>
-        <li>User Agent: <span id="fingerprint-userAgent"></span></li>
-        <li>Languages: <span id="fingerprint-languages"></span></li>
-        <li>Device Memory: <span id="fingerprint-deviceMemory"></span></li>
-        <li>Battery: <span id="fingerprint-battery"></span></li>
-        <!-- <li>Connection: <span id="fingerprint-connection"></span></li> -->
-        <li>Media Devices: <span id="fingerprint-mediaDevices"></span></li>
-        <li>Mime Types: <span id="fingerprint-mimeTypes"></span></li>
-        <li>Hardware Concurrency: <span id="fingerprint-hardwareConcurrency"></span></li>
-        <li>Screen Resolution: <span id="fingerprint-screenResolution"></span></li>
-        <li>Timezone Offset: <span id="fingerprint-timezoneOffset"></span></li>
-        <li>Date Time Format: <span id="fingerprint-dateTimeFormat"></span></li>
-    </ul>
-</div>
+                            <div class="div-header color-047488 text-left pl-3">Browser Fingerprint</div>
+                            <ul>
+                                <li>Platform: <span id="fingerprint-platform"></span></li>
+                                <li>Plugins: <span id="fingerprint-plugins"></span></li>
+                                <li>User Agent: <span id="fingerprint-userAgent"></span></li>
+                                <li>Languages: <span id="fingerprint-languages"></span></li>
+                                <li>Device Memory: <span id="fingerprint-deviceMemory"></span></li>
+                                <li>Battery: <span id="fingerprint-battery"></span></li>
+                                <!-- <li>Connection: <span id="fingerprint-connection"></span></li> -->
+                                <li>Media Devices: <span id="fingerprint-mediaDevices"></span></li>
+                                <li>Mime Types: <span id="fingerprint-mimeTypes"></span></li>
+                                <li>Hardware Concurrency: <span id="fingerprint-hardwareConcurrency"></span></li>
+                                <li>Screen Resolution: <span id="fingerprint-screenResolution"></span></li>
+                                <li>Timezone Offset: <span id="fingerprint-timezoneOffset"></span></li>
+                                <li>Date Time Format: <span id="fingerprint-dateTimeFormat"></span></li>
+                            </ul>
+                        </div>
                     </div>
 
 
@@ -210,7 +212,7 @@ function loadTrackersForProfile() {
         }
     });
     var profiletest = ['profile1', 'profile2', 'profile3'];
-    
+
     if (selectedProfile != 'allProfiles') {
         profiletest = [selectedProfile];
     }

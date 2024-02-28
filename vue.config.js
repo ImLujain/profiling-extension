@@ -1,30 +1,50 @@
-const path = require('path')
-const fs = require('fs')
+const path = require('path');
+const fs = require('fs');
 
 // Generate pages object
-const pages = {}
+const pages = {};
 
-function getEntryFile (entryPath) {
-  let files = fs.readdirSync(entryPath)
-  return files
+function getEntryFile(entryPaths, allFiles = []) {
+  entryPaths.forEach(entryPath => {
+    const entries = fs.readdirSync(entryPath).map(entry => path.join(entryPath, entry));
+    entries.forEach(entry => {
+      if (fs.statSync(entry).isDirectory()) {
+        getEntryFile([entry], allFiles); // Recursively fetch files from subdirectories
+      } else {
+        allFiles.push(entry);
+      }
+    });
+  });
+  return allFiles;
 }
 
-const chromeName = getEntryFile(path.resolve(`src/entry`))
+// Specify both paths in an array
+const entryPaths = [
+  path.resolve(`src/entry`),
+  path.resolve(`src/entry/profiles`) 
+];
 
-function getFileExtension (filename) {
-  return /[.]/.exec(filename) ? /[^.]+$/.exec(filename)[0] : undefined
+const chromeName = getEntryFile(entryPaths);
+
+function getFileExtension(filename) {
+  const baseName = path.basename(filename);
+  return /[.]/.exec(baseName) ? /[^.]+$/.exec(baseName)[0] : undefined;
 }
-chromeName.forEach((name) => {
-  const fileExtension = getFileExtension(name)
-  const fileName = name.replace('.' + fileExtension, '')
+
+chromeName.forEach((filePath) => {
+  const name = path.basename(filePath);
+  const fileExtension = getFileExtension(name);
+  const fileName = name.replace('.' + fileExtension, '');
   pages[fileName] = {
-    entry: `src/entry/${name}`,
+    entry: filePath, // Adjusted to use the full file path
     template: 'public/index.html',
     filename: `${fileName}.html`
-  }
-})
+  };
+});
 
-const isDevMode = process.env.NODE_ENV === 'development'
+console.log(chromeName)
+
+const isDevMode = process.env.NODE_ENV === 'development';
 
 module.exports = {
   pages,
@@ -43,8 +63,8 @@ module.exports = {
           }
         ]
       }
-    ])
-    config.optimization.minimize(false) //prevent minify code to help debug
+    ]);
+    config.optimization.minimize(false); // Prevent minify code to help debug
   },
   configureWebpack: {
     output: {
@@ -56,4 +76,4 @@ module.exports = {
   css: {
     extract: false // Make sure the css is the same
   }
-}
+};
