@@ -90,5 +90,10 @@
 .color-047488 {
     color: #047488;
 }
+
+.div-header[data-v-078d1b54] {
+    padding: 10px 0;
+    border-bottom: 1px solid gray;
+}
 </style>
 

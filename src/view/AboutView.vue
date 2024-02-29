@@ -1,5 +1,8 @@
 <template>
-    <div class="pt-3">
+
+<div class="div-header-primary  color-047488 text-left pl-3">About browser fingerprinting</div>
+    
+<div class="pt-3">
         <div class="div-header  color-047488 text-left pl-3 font-weight-bold">What is browser fingerprinting?</div>
         <hr />
         <div class="p-2">
@@ -118,4 +121,11 @@
 <style>
 .color-047488 {
     color: #047488;
-}</style>
+}
+
+.div-header-primary{
+    padding: 10px 0;
+    border-bottom: 1px solid gray;
+}
+
+</style>

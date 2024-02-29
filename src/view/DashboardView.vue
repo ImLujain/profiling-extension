@@ -2,7 +2,7 @@
     <div>
      
                 <!-- main container -->
-                <div class="div-header  color-047488 text-left pl-3">Dashboard</div>
+                <div class="div-header-primary  color-047488 text-left pl-3">Dashboard</div>
                 <!-- profile div-->
                 <div id="content" class="mt-3">
 
@@ -529,6 +529,9 @@ img {
     color: #047488;
 }
 
-
+.div-header-primary{
+    padding: 10px 0;
+    border-bottom: 1px solid gray;
+}
 </style>
 
