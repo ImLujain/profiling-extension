@@ -2,7 +2,7 @@
   <div id="popup-container">
     <!-- Tab Headers -->
     <div class="header">
-      <div class="div-header text-center">Detected Trackers</div>
+      <div class="div-header text-center">Privacy Guard</div>
       <div class="tab-headers">
         <button :class="{ 'active-tab': currentTab === 'accesses' }" @click="currentTab = 'accesses'">Access
           Insights</button>
@@ -21,8 +21,8 @@
         <!-- <p><strong>Total Trackers Detected:</strong> <span>{{ totalCount }}</span></p> -->
         <div class="row">
           <div class="col-12 mt-3 mb-3">
-            <CircleProgressBar :value="uniqueTrackersCount" :max="uniqueTrackersCount">{{ uniqueTrackersCount }}
-            </CircleProgressBar>
+            <!-- <CircleProgressBar :value="uniqueTrackersCount" :max="uniqueTrackersCount">{{ uniqueTrackersCount }}
+            </CircleProgressBar> -->
 
           </div>
           <div class="col-12 ">
@@ -101,16 +101,6 @@ import { ref, watch, computed } from "vue";
 
 
 
-
-
-
-
-
-
-
-
-
-
 const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
   "navigator.userAgent": {
     "value": "userAgent",
@@ -130,7 +120,7 @@ const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
   },
   "navigator.deviceMemory": {
     "value": "deviceMemory",
-    "des": "Returns the approximate amount of device memory in gigabytes"
+    "des": "a property that tells websites how much memory your device has, helping them adjust for better performance. It can also used to help identify your device uniquely."
   },
   "navigator.hardwareConcurrency": {
     "value": "hardwareConcurrency",
@@ -159,6 +149,11 @@ const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
   "navigator.permissions": {
     "value": "permissions",
     "des": "Permissions of the browser"
+  },
+
+  "navigator.appVersion": {
+    "value": "appVersion",
+    "des": "null."
   },
   "screen.width": {
     "value": "Screen width",
@@ -190,6 +185,11 @@ const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
   },
   "document.cookie": {
     "value": "cookie",
+    "des": " allows websites to read and write cookies, small pieces of data stored on your browser to remember information about your visit,"
+  },
+
+  "document.domain": {
+    "value": "Domain",
     "des": "null"
   },
   "window.sessionStorage": {
@@ -210,11 +210,11 @@ const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
   },
   "window.devicePixelRatio": {
     "value": "window.devicePixelRatio",
-    "des": "null"
+    "des": "enhances website visuals for your screen's sharpness and aids in browser fingerprinting by identifying device display characteristics."
   },
   "window.matchMedia": {
     "value": "window.matchMedia",
-    "des": "null"
+    "des": " used to determine if the content of a webpage matches certain conditions, like screen size or whether dark mode is enabled, which can help websites tailor their appearance and functionality to your device. This capability can also be utilized in browser fingerprinting to gather insights about your device's characteristics without collecting personal information."
   },
 
 
@@ -295,8 +295,8 @@ const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
     "des": "null"
   },
   "Intl.DateTimeFormat().resolvedOptions().timeZone": {
-    "value": "Intl.DateTimeFormat().resolvedOptions().timeZone",
-    "des": "null"
+    "value": "TimeZone",
+    "des": "returns current timezone"
   },
   "window.fetch": {
     "value": "window.fetch",
@@ -316,35 +316,18 @@ const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
   },
   "navigator.maxTouchPoints": {
     "value": "navigator.maxTouchPoints",
-    "des": "null"
+    "des": "to detect if the device used support touch and number of max touches allowed"
   },
   "navigator.onLine": {
     "value": "navigator.onLine",
-    "des": "null"
+    "des": "indicates if the user is connected to the internet or not"
   },
-  "navigator.navigator.mimeTypes": {
+  
+  "navigator.mimeTypes": {
     "value": "navigator.mimeTypes",
     "des": "null"
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -491,7 +474,7 @@ const parsedLocalStorageData = computed(() => {
 }
 
 .tab-headers button {
-  background-color: #007BFF;
+  background-color: #008198;
   color: #FFFFFF;
   border-radius: 4px;
   padding: 8px 16px;
@@ -631,7 +614,7 @@ li .description{
   display: flex;
   justify-content: space-around;
   margin: 20px 0px 0px 0px;
-  background-color: #007BFF;
+  background-color: #008198;
 }
 
 .tab-headers button {
@@ -645,13 +628,13 @@ li .description{
 }
 
 .tab-headers button:hover {
-  background-color: #0056b3;
+  background-color: #008198;
   color: #f9f9f9;
 }
 
 .tab-headers .active-tab {
   background-color: #f2f2f2 !important;
-  color: #007BFF;
+  color: #008198;
 }
 
 
@@ -681,7 +664,7 @@ p {
 }
 
 span {
-  color: #007BFF;
+  color: #008198;
   font-weight: 600;
 }
 
@@ -713,7 +696,7 @@ span {
 }
 
 .open-dashboard-container button {
-  background-color: #007BFF;
+  background-color: #008198;
   color: white;
   padding: 7px 14px;
   border: none;
@@ -723,7 +706,7 @@ span {
 }
 
 .open-dashboard-container button:hover {
-  background-color: #0056b3;
+  background-color: #008198;
 }
 
 .div-header {
@@ -741,11 +724,11 @@ span {
 }
 
 circle.circle-progress__circle.circle-progress__line--top.circle-progress__line--filled {
-  stroke: #027bff !important;
+  stroke: #008198 !important;
 }
 
 .circle-progress__line--filled {
-  stroke: #027bff !important;
+  stroke: #008198 !important;
 
 }
 

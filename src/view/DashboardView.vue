@@ -45,8 +45,8 @@
                                     </table>
                                 </div>
                                 <!-- Pagination for the table -->
-                                <nav aria-label="Table pagination">
-                                    <ul class="pagination">
+                                <nav aria-label="Table pagination" class="custom-pagination">
+                                    <ul class="pagination" >
                                         <li class="page-item"><a class="page-link" href="#">Previous</a></li>
                                         <li class="page-item"><a class="page-link" href="#">1</a></li>
                                         <li class="page-item"><a class="page-link" href="#">2</a></li>
@@ -56,7 +56,7 @@
                                 </nav>
                             </div>
                             <div class="text-center mt-4">
-                                <button @click="clearStoredData" id="clearData" class="btn btn-primary">Clear Data</button>
+                                <button @click="clearStoredData" id="clearData" class="btn custom-btn-color">Clear Data</button>
                             </div>
                         </div>
                         <div id="no-result"><img src="./../../public/no-result.png" /> No trackers detected.</div>
@@ -532,6 +532,26 @@ img {
 .div-header-primary{
     padding: 10px 0;
     border-bottom: 1px solid gray;
+}
+
+.custom-btn-color {
+  background-color: #008198; /* Green background */
+  color: white; /* White text */
+  border: none; /* No border */
+}
+
+.custom-btn-color:hover {
+  background-color: #004450; /* Darker green on hover */
+}
+.custom-pagination .page-item .page-link {
+    background-color: #ffffff; /* New background color */
+    color: #008198; /* Text color */
+    border-color: #008198; /* Border color */
+}
+
+.custom-pagination .page-item .page-link:hover {
+    background-color: #0c879d;
+    border-color: #008198;
 }
 </style>
 
