@@ -4,16 +4,16 @@ let disconnectList = {}; // Create list to store the retrieved list
 let currentProfile = 'allProfiles'; // Default profile
 
 const userAgents = {
-    'profile1': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537',
+    'profile1': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 ',
     'profile2': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Safari/605.1.15',
     'profile3': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'
 };
 
-const profileScripts = {
-    'profile1': 'profile1.js',
-    'profile2': 'profile2.js',
-    //'profile3': 'profile3.js',
-};
+// const profileScripts = {
+//     'profile1': 'profile1.js',
+//     'profile2': 'profile2.js',
+//     //'profile3': 'profile3.js',
+// };
 
 async function getCurrentTabId() {
     let [tab] = await chrome.tabs.query({
@@ -277,14 +277,14 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        if (request.greeting === "hello") {
-            sendResponse({farewell: "goodbye"});
-        }
-        return true;
-    }
-);
+// chrome.runtime.onMessage.addListener(
+//     function(request, sender, sendResponse) {
+//         if (request.greeting === "hello") {
+//             sendResponse({farewell: "goodbye"});
+//         }
+//         return true;
+//     }
+// );
 
 function getAccessData() {
     return accessData;

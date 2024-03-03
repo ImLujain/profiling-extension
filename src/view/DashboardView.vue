@@ -15,13 +15,13 @@
                             <div class=" col-12 col-4">
                                 <label for="profileSelect">Select Profile:</label>
                                 <select id="profileSelect" class="form-control">
-                                    <option value="allProfiles" selected>All Profiles</option>
-                                    <option value="profile1">Windows Desktop</option>
+                                    <option value="allProfiles" selected>Real Identity</option>
+                                    <option value="profile1">Linux Desktop</option>
                                     <option value="profile2">MacBook Air</option>
-                                    <option value="profile3">iPhone X</option>
+                                    <option value="profile3">iPhone</option>
                                 </select>
                             </div>
-<div  id="table-info"  >
+                    <div  id="table-info"  >
                             <!-- Combined canvas div -->
                             <div class=" mt-3">
                                 <canvas id="topTrackersChart"></canvas>
@@ -65,7 +65,7 @@
 
                         <div id="fingerprint-info" class="col-6 ">
                             <div class="div-header color-047488 text-left pl-3 mb-3 ">Browser Fingerprint</div>
-                            <!-- <label for="profileSelect">Your current Profile:</label> -->
+                            <label for="profileSelect">Here's a snapshot of your current browser fingerprint profile:</label>
                             <div class="row text-left ">
                                 <div class="col-12 br-1 border-info-fingerprint">
                                     <div class="row p-1">
@@ -134,10 +134,10 @@
                                     </div>
                                 </div>
                                 <div class="col-12 br-1 border-info-fingerprint">
-                                    <div class="row p-1">
+                                    <!-- <div class="row p-1">
                                         <div class="col-3 pl-3 color-047488   border-info-fingerprint-fingerprintright">Date Time Format</div>
                                         <div class="col-9">   <span id="fingerprint-dateTimeFormat"></span></div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 </div>
                            
@@ -171,6 +171,12 @@ onMounted(() => {
         const selectedProfile = profileSelect.value;
         chrome.storage.local.set({ selectedProfile: selectedProfile }, function () {
             loadTrackersForProfile();
+            if (selectedProfile != 'allProfiles'){
+            loadProfileInfo(selectedProfile);
+            }
+            else {
+                populateFingerprintInfo();
+            }
         });
     });
     //for table pagination, it supposed to show 4 profiles 
@@ -194,7 +200,7 @@ onMounted(() => {
 
 });
 
-//This function that reads your browser fingerprint to show them 
+// //This function that reads your browser fingerprint to show them 
 async function populateFingerprintInfo() {
     document.getElementById('fingerprint-platform').textContent = navigator.platform;
     document.getElementById('fingerprint-plugins').textContent = `${navigator.plugins.length} plugins`;
@@ -208,8 +214,73 @@ async function populateFingerprintInfo() {
     document.getElementById('fingerprint-hardwareConcurrency').textContent = navigator.hardwareConcurrency;
     document.getElementById('fingerprint-screenResolution').textContent = `${screen.width}x${screen.height}`;
     populateTimezoneOffset();
-    populateDateTimeFormat();
+    // populateDateTimeFormat();
 }
+
+function loadProfileInfo(selectedProfile) {
+    const profileData = {
+        profile1: {
+            platform: "Linux",
+            plugins: "0 plugins",
+            userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+            languages: "en-US, en",
+            deviceMemory: "Not available",
+            battery: "70% (charging)", // Simplified for demonstration
+            mediaDevices: "Not accessible",
+            mimeTypes: "0 mime types",
+            hardwareConcurrency: "Randomized",
+            screenResolution: "1920x1080",
+            timezoneOffset: "UTC +0",
+            dateTimeFormat: "en-US"
+        },
+        profile2: {
+            platform: "MacIntel",
+            plugins: "0 plugins",
+            userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Safari/605.1.15",
+            languages: "Randomized",
+            deviceMemory: "Not available",
+            battery: "Not available",
+            mediaDevices: "Not accessible",
+            mimeTypes: "0 mime types",
+            hardwareConcurrency: "Randomized",
+            screenResolution: "1440x900",
+            timezoneOffset: "UTC +0",
+            dateTimeFormat: "es-ES"
+        },
+        profile3: {
+            platform: "iPhone",
+            plugins: "0 plugins",
+            userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1",
+            languages: "Randomized",
+            deviceMemory: "Not available",
+            battery: "Not available",
+            mediaDevices: "Not accessible",
+            mimeTypes: "0 mime types",
+            hardwareConcurrency: "Randomized",
+            screenResolution: "375x812",
+            timezoneOffset: "UTC +0",
+            dateTimeFormat: "fr-FR"
+        }
+    };
+
+    // Assuming 'selectedProfile' is one of 'profile1', 'profile2', 'profile3'
+    const data = profileData[selectedProfile];
+
+    // Update the table with the selected profile's data
+    document.getElementById('fingerprint-platform').textContent = data.platform;
+    document.getElementById('fingerprint-plugins').textContent = data.plugins;
+    document.getElementById('fingerprint-userAgent').textContent = data.userAgent;
+    document.getElementById('fingerprint-languages').textContent = data.languages;
+    document.getElementById('fingerprint-deviceMemory').textContent = data.deviceMemory;
+    document.getElementById('fingerprint-battery').textContent = data.battery;
+    document.getElementById('fingerprint-mediaDevices').textContent = data.mediaDevices;
+    document.getElementById('fingerprint-mimeTypes').textContent = data.mimeTypes;
+    document.getElementById('fingerprint-hardwareConcurrency').textContent = data.hardwareConcurrency;
+    document.getElementById('fingerprint-screenResolution').textContent = data.screenResolution;
+    document.getElementById('fingerprint-timezoneOffset').textContent = data.timezoneOffset;
+    // document.getElementById('fingerprint-dateTimeFormat').textContent = data.dateTimeFormat;
+}
+
 
 async function populateBatteryInfo() {
     if ('getBattery' in navigator) {
@@ -247,17 +318,18 @@ let topTrackersChartInstance = null;
 function loadTrackersForProfile() {
     let selectedProfile = profileSelect.value;
     // Initially hide all charts
-    ['profile1', 'profile2', 'profile3'].forEach(profile => {
+    ['allProfiles','profile1', 'profile2', 'profile3'].forEach(profile => {
         const element = document.getElementById(`topTrackersChart`);
         if (element) {
             element.style.display = 'none';
         }
     });
-    var profiletest = ['profile1', 'profile2', 'profile3'];
+    var profiletest = ['allProfiles','profile1', 'profile2', 'profile3'];
+    profiletest = [selectedProfile];
 
-    if (selectedProfile != 'allProfiles') {
-        profiletest = [selectedProfile];
-    }
+    // if (selectedProfile != 'allProfiles') {
+    //     profiletest = [selectedProfile];
+    // }
     console.log(selectedProfile)
 
     console.log('profiletest')
@@ -373,7 +445,8 @@ function displayTopCategoriesChart(trackers, profile) {
     const chartTitle = {
         'profile1': 'Profile 1',
         'profile2': 'Profile 2',
-        'profile3': 'Profile 3'
+        'profile3': 'Profile 3',
+        'allProfiles' : 'allProfiles'
     }[profile];
 
     window[`topTrackersChartInstance`] = new Chart(ctx, {

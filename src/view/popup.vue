@@ -104,19 +104,19 @@ import { ref, watch, computed } from "vue";
 const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
   "navigator.userAgent": {
     "value": "userAgent",
-    "des": "A string giving details on the browser and its underlying operating system. This attribute is collected with Javascript."
+    "des": "identifies the browser and operating system, useful for tailoring user experiences, but it also serves as a key component in browser fingerprinting by revealing detailed information about the user's device."
   },
   "navigator.platform": {
     "value": "platform",
-    "des": "Browser-populated JavaScript attribute that indicates the platform the browser is running on (window.navigator.platform)"
+    "des": "indicates the platform on which the browser is running, which can be used to optimize web content for specific OS but also contributes to browser fingerprinting by providing another layer of device identification"
   },
   "navigator.vendor": {
     "value": "vendor",
-    "des": "Indicate the browser' vendor"
+    "des": " returns the browser's vendor name, assisting in customizing web experiences, but also contributes to browser fingerprinting by offering insights into the browser brand used by the visitor."
   },
   "navigator.languages": {
     "value": "languages",
-    "des": "HTTP header sent to the server that indicates the preferred languages for the response"
+    "des": "provides user's preferred languages, helping websites deliver content in preferred languages, yet it can also assist in browser fingerprinting by revealing language preferences that add to a unique user profile."
   },
   "navigator.deviceMemory": {
     "value": "deviceMemory",
@@ -124,90 +124,92 @@ const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
   },
   "navigator.hardwareConcurrency": {
     "value": "hardwareConcurrency",
-    "des": "Returns the value of navigator.hardwareConcurrency"
+    "des": "It is used to adjust workloads according to the user's CPU capabilities for optmization, but it can also be exploited for browser fingerprinting by collecting hardware-specific data to track users online"
   },
   "navigator.doNotTrack": {
     "value": "doNotTrack",
-    "des": "Browser-populated JavaScript attribute that indicates your Do Not Track setting (window.navigator.doNotTrack), 'NC' means the value was not specified"
+    "des": "is intended to signal a user's preference for privacy, yet it can inadvertently aid in browser fingerprinting by offering an additional data point that differentiates users based on their tracking preference"
   },
   "navigator.geolocation": {
     "value": "geolocation",
-    "des": "Test to find out if the location bar is visible"
+    "des": "provides user location data for improved service delivery, yet can aid in browser fingerprinting by adding geographical information to a user's digital footprin"
   },
   "navigator.plugins": {
     "value": "plugins",
-    "des": "Browser-populated JavaScript attribute that gives the list of activated plugins in the browser."
+    "des": " lists installed plugins in the user's browser, aiding in feature compatibility checks, but also plays a role in browser fingerprinting by offering insights into the unique configuration of the user's browser setup"
   },
   "navigator.getBattery": {
     "value": "getBattery",
-    "des": "Returns property belonging to the battery value, such as level, charging, chargin time and discharging time"
+    "des": " offers battery status details to adapt web experiences, but also aids in browser fingerprinting by exposing unique device power characteristics."
   },
   "navigator.connection": {
     "value": "connection",
-    "des": "Connection informations"
+    "des": " reveals internet connection details to optimize content, yet contributes to browser fingerprinting by distinguishing users based on network traits."
   },
   "navigator.permissions": {
     "value": "permissions",
-    "des": "Permissions of the browser"
+    "des": "manages browser feature permissions, yet aids in browser fingerprinting by tracking unique user permission settings"
   },
 
   "navigator.appVersion": {
     "value": "appVersion",
-    "des": "null."
+    "des": " reveals browser version for compatibility purposes, yet assists in browser fingerprinting by detailing the user's browser setup."
   },
   "screen.width": {
     "value": "Screen width",
-    "des": "Returns the width of the screen."
+    "des": "provides screen width for responsive design, yet enhances browser fingerprinting by offering unique device dimensions."
   },
   "screen.height": {
     "value": "Screen height",
-    "des": "Returns the height of the screen in pixels. "
+    "des": "provides screen height for responsive design, yet enhances browser fingerprinting by offering unique device dimensions. "
   },
   "screen.colorDepth": {
     "value": "colorDepth",
-    "des": "Returns the color depth of the screen."
+    "des": "details display color capacity for content optimization,  yet aids browser fingerprinting by disclosing display quality."
   },
   "screen.pixelDepth": {
     "value": "pixelDepth",
-    "des": "Returns the color depth of the screen."
+    "des": "Reveals display color depth for content adaptation, yet contributes to browser fingerprinting through unique screen metrics."
   },
   "screen.availWidth": {
     "value": "availWidth",
-    "des": " Returns the amount of horizontal space in pixels available to the window."
+    "des": "  indicates usable screen width for layout design, yet aids in browser fingerprinting by revealing device-specific usability metrics."
   },
   "screen.availHeight": {
     "value": "availHeight",
-    "des": "Specifies the height of the screen, in pixels, minus permanent or semipermanent user interface features displayed by the operating system, such as the Taskbar on Windows."
+    "des": " indicates usable screen height for layout design, yet aids in browser fingerprinting by revealing device-specific usability metrics."
   },
   "screen.orientation.type": {
-    "value": "]orientation.type",
-    "des": "null"
+    "value": "Orientation.type",
+    "des": "indicates screen orientation for responsive design, yet contributes to browser fingerprinting by revealing device usage patterns."
   },
   "document.cookie": {
     "value": "cookie",
-    "des": " allows websites to read and write cookies, small pieces of data stored on your browser to remember information about your visit,"
+    "des": " manages website cookies for user data storage, yet can facilitate user tracking by storing unique identifiers."
   },
 
-  "document.domain": {
-    "value": "Domain",
-    "des": "null"
-  },
-  "window.sessionStorage": {
-    "value": "Session Storage",
-    "des": "Information on the support of session storage. This attribute is collected through Javascript."
-  },
+  // "document.domain": {
+  //   "value": "Domain",
+  //   "des": "null"
+  // },
+  // "window.sessionStorage": {
+  //   "value": "Session Storage",
+  //   "des": "Information on the support of session storage. This attribute is collected through Javascript."
+  // },
+
   "document.referrer": {
     "value": "Referrer",
-    "des": "null"
+    "des": "used to track the previous webpage's URL, aiding in browser fingerprinting by revealing user navigation paths"
   },
   "document.hasFocus": {
     "value": "document.hasFocus",
-    "des": "Information on the support of session storage. This attribute is collected through Javascript."
+    "des": "enhances user interaction by checking if the page is focused, indirectly aiding in browser fingerprinting through user engagement patterns."
   },
   "window.indexedDB": {
     "value": "indexedDB",
-    "des": "Information on the support of IndexedDB. This attribute is collected through Javascript."
+    "des": " enables offline data storage in browsers, indirectly aiding browser fingerprinting by identifying unique database configurations."
   },
+
   "window.devicePixelRatio": {
     "value": "window.devicePixelRatio",
     "des": "enhances website visuals for your screen's sharpness and aids in browser fingerprinting by identifying device display characteristics."
@@ -220,80 +222,83 @@ const deviceInfoDes: {[key: string]: {value: string, des: string }  } = {
 
   "HTMLCanvasElement.prototype.getContext": {
     "value": "HTMLCanvasElement.prototype.getContext",
-    "des": "null"
+    "des": "enables drawing on <canvas>, aiding in browser fingerprinting through unique graphic renderings"
   },
   "WebGLRenderingContext.prototype.getParameter": {
     "value": "WebGLRenderingContext.prototype.getParameter",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.createBuffer": {
     "value": "WebGLRenderingContext.prototype.createBuffer",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.bindBuffer": {
     "value": "WebGLRenderingContext.prototype.bindBuffer",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.bufferData": {
     "value": "WebGLRenderingContext.prototype.bufferData",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.createShader": {
     "value": "WebGLRenderingContext.prototype.createShader",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.shaderSource": {
     "value": "WebGLRenderingContext.prototype.shaderSource",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.compileShader": {
     "value": "WebGLRenderingContext.prototype.compileShader",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.getShaderParameter": {
     "value": "WebGLRenderingContext.prototype.getShaderParameter",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.createProgram": {
     "value": "WebGLRenderingContext.prototype.createProgram",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.linkProgram": {
     "value": "WebGLRenderingContext.prototype.linkProgram",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.useProgram": {
     "value": "WebGLRenderingContext.prototype.useProgram",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.getUniformLocation": {
     "value": "WebGLRenderingContext.prototype.getUniformLocation",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
   "WebGLRenderingContext.prototype.uniform1i": {
     "value": "WebGLRenderingContext.prototype.uniform1i",
-    "des": "null"
+    "des": "WebGLRenderingContext attributes enable advanced graphics in web applications, contributing to browser fingerprinting by revealing unique GPU characteristics."
   },
+
   "AudioContext.prototype.sampleRate": {
-    "value": "AudioContext.prototype.sampleRate",
-    "des": "null"
+    "value": "AudioContext.sampleRate",
+    "des": "specifies the audio processing rate, aiding browser fingerprinting by revealing device-specific audio capabilities."
   },
   "AudioContext.prototype.createOscillator": {
-    "value": "",
-    "des": "null"
+    "value": "AudioContext.createOscillator",
+    "des": "is a method for generating sound waves in web applications, useful for creating audio experiences and contributing to browser fingerprinting by analyzing sound wave characteristics to identify unique device behaviors"
   },
   "document.ontouchstart": {
-    "value": "",
-    "des": "null"
+    "value": "Touchstart",
+    "des": "detects touch initiation, aiding in browser fingerprinting by signaling touch support."
   },
-  "document.onmousemove": {
-    "value": "document.onmousemove",
-    "des": "null"
-  },
+  // "document.onmousemove": {
+  //   "value": "document.onmousemove",
+  //   "des": "null"
+  // },
   "Date.prototype.getTimezoneOffset": {
-    "value": "Date.prototype.getTimezoneOffset",
-    "des": "null"
+    "value": "getTimezoneOffset",
+    "des": "identifying user time zones."
   },
+
+  //stopped here
   "Intl.DateTimeFormat().resolvedOptions().timeZone": {
     "value": "TimeZone",
     "des": "returns current timezone"
