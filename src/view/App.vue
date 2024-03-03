@@ -19,8 +19,12 @@
                     <li>
                         <router-link to="/change-profile">
                             <img src="./../../public/change.png" />
-                        <p  class="color-047488">Chnage profile</p>
+                        <p  class="color-047488">Change profile</p>
                         </router-link>
+                    </li>
+                    <li @click="goToExternalLink" style="cursor: pointer;">
+                            <img src="./../../public/survey2.png" />
+                        <p  class="color-047488">Post usage survey</p>
                     </li>
                 </ul>
             </div>
@@ -31,8 +35,18 @@
     </div>
   </template>
 
-<style scoped>
 
+<script>
+export default {
+  methods: {
+    goToExternalLink() {
+      window.open('https://survey.sogolytics.com/r/Yq5tGW', '_blank');
+    }
+  }
+}
+</script>
+
+<style scoped>
 
 #sidbar {
     display: inline-block;

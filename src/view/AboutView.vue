@@ -17,7 +17,7 @@
         <div class="div-header  color-047488 text-left pl-3 font-weight-bold">Browser Fingerprinting Methods</div>
         
         <div class="p-2">
-            Browser fingerprinting involves several techniques to collect information about a user's device and browser.
+             Browser fingerprinting involves several techniques to collect information about a user's device and browser.
             Here
             are some of the common methods used:
 

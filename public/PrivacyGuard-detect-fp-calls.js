@@ -159,6 +159,7 @@ function createProxyHandler(handler) {
 //The function that actually monitor the access to the pre-definded properties 
 function monitorAccess(obj, property, handler) {
     const parts = property.split(".");
+    console.log(`partsss`,parts)
     let currentObj = obj;
     for (let i = 0; i < parts.length - 1; i++) {
         currentObj = currentObj[parts[i]];
@@ -179,14 +180,14 @@ function monitorAccess(obj, property, handler) {
                     return result.then(value => {
                         // Log promise resolution or perform additional actions
                         console.log(`${property} promise resolved`);
-                        return value;
+                        return value; // Return the resolved value
                     }).catch(error => {
                         // Log promise rejection or perform additional actions
                         console.log(`${property} promise rejected`);
-                        throw error;
+                        throw error; // Re-throw the error after logging
                     });
                 }
-                return result;
+                return result; // Return the result directly for non-promise functions
             } catch (error) {
                 console.error(`Error calling ${property}:`, error);
                 throw error; // Re-throw the error after logging
@@ -207,6 +208,7 @@ function monitorAccess(obj, property, handler) {
         });
     }
 }
+
 
 // Function to set up monitoring for all properties in deviceInfoProperties
 function setupDeviceInfoMonitoring() {
