@@ -1,21 +1,6 @@
 <template>
     <div>
-        <div class="row cover">
-            <div id="sidbar" class="col-2 ">
-                <div class="div-header text-center">Detected Trackers</div>
-                <ul>
-                    <li> <img src="./../../public/dashboard.png" />
-                        <p>Dashboar</p>
-                    </li>
-                    <li><img src="./../../public/about.png" />
-                        <p>About us </p>
-                    </li>
-                    <li><img src="./../../public/change.png" />
-                        <p>Chnage profile</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-9 ">
+  
                 <!-- main container -->
                 <div class="div-header  color-047488 text-left pl-3">My Profile</div>
                 <!-- profile div-->
@@ -74,8 +59,7 @@
 
                 </div>
             </div>
-        </div>
-    </div>
+ 
 </template>
 
 
@@ -87,42 +71,6 @@
 
 .br-1 {
     border-right: 1px solid #91919178;
-}
-
-#sidbar .div-header {
-    font-family: 'Orbitron', sans-serif;
-}
-
-/* display: inline; */
-
-
-#sidbar li {
-    list-style: none;
-    padding: 8px;
-
-}
-
-#sidbar ul {
-    padding: 0px;
-    text-align: left;
-}
-
-.color-047488 {
-    color: #047488;
-}
-
-#sidbar img {
-    width: 23px;
-}
-
-#sidbar p {
-    padding-left: 6px;
-    display: inline-block;
-    margin: 2px;
-}
-
-#sidbar li:hover {
-    color: #047488;
 }
 
 .app {
@@ -137,6 +85,15 @@
 .cover {
     height: 892px;
 
+}
+
+.color-047488 {
+    color: #047488;
+}
+
+.div-header[data-v-078d1b54] {
+    padding: 10px 0;
+    border-bottom: 1px solid gray;
 }
 </style>
 

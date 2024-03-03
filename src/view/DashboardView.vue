@@ -1,24 +1,8 @@
 <template>
     <div>
-        <div class="row cover">
-            <div id="sidbar" class="col-2 ">
-                <div class="div-header text-center">Privacy Guard</div>
-                <ul>
-                    <li> <img src="./../../public/dashboard.png" />
-                        <p>Dashboar</p>
-                    </li>
-                    <li><img src="./../../public/about.png" />
-                        <p>About us </p>
-                    </li>
-                    <li><img src="./../../public/change.png" />
-                        <p>Chnage profile</p>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-9 ">
+     
                 <!-- main container -->
-                <div class="div-header  color-047488 text-left pl-3">Dashboard</div>
+                <div class="div-header-primary  color-047488 text-left pl-3">Dashboard</div>
                 <!-- profile div-->
                 <div id="content" class="mt-3">
 
@@ -26,6 +10,8 @@
                     <!-- The div and row that should hold both the table and chart -->
                     <div class="row mb-4">
                         <div class=" col-lg-6">
+                            <div class="div-header color-047488 text-left pl-3 mb-3">Profile</div>
+
                             <div class=" col-12 col-4">
                                 <label for="profileSelect">Select Profile:</label>
                                 <select id="profileSelect" class="form-control">
@@ -77,34 +63,90 @@
                     </div>
                      
 
-                        <div id="fingerprint-info" class="col-6 mt-3">
-                            <div class="div-header color-047488 text-left pl-3">Browser Fingerprint</div>
-                            <ul>
-                                <li>Platform: <span id="fingerprint-platform"></span></li>
-                                <li>Plugins: <span id="fingerprint-plugins"></span></li>
-                                <li>User Agent: <span id="fingerprint-userAgent"></span></li>
-                                <li>Languages: <span id="fingerprint-languages"></span></li>
-                                <li>Device Memory: <span id="fingerprint-deviceMemory"></span></li>
-                                <li>Battery: <span id="fingerprint-battery"></span></li>
-                                <!-- <li>Connection: <span id="fingerprint-connection"></span></li> -->
-                                <li>Media Devices: <span id="fingerprint-mediaDevices"></span></li>
-                                <li>Mime Types: <span id="fingerprint-mimeTypes"></span></li>
-                                <li>Hardware Concurrency: <span id="fingerprint-hardwareConcurrency"></span></li>
-                                <li>Screen Resolution: <span id="fingerprint-screenResolution"></span></li>
-                                <li>Timezone Offset: <span id="fingerprint-timezoneOffset"></span></li>
-                                <li>Date Time Format: <span id="fingerprint-dateTimeFormat"></span></li>
-                            </ul>
+                        <div id="fingerprint-info" class="col-6 ">
+                            <div class="div-header color-047488 text-left pl-3 mb-3 ">Browser Fingerprint</div>
+                            <!-- <label for="profileSelect">Your current Profile:</label> -->
+                            <div class="row text-left ">
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488  border-info-fingerprint-fingerprintright ">Platform</div>
+                                        <div class="col-9"> <span id="fingerprint-platform"></span> </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488  border-info-fingerprint-fingerprintright ">Plugins</div>
+                                        <div class="col-9"> <span id="fingerprint-plugins"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488  border-info-fingerprint-fingerprintright ">User Agent</div>
+                                        <div class="col-9"> <span id="fingerprint-userAgent"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488  border-info-fingerprint-fingerprintright ">Languages</div>
+                                        <div class="col-9"> <span id="fingerprint-languages"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488  border-info-fingerprint-fingerprintright ">Device Memory</div>
+                                        <div class="col-9"> <span id="fingerprint-deviceMemory"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488   border-info-fingerprint-fingerprintright">Battery</div>
+                                        <div class="col-9">  <span id="fingerprint-battery"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488   border-info-fingerprint-fingerprintright">Media Devices</div>
+                                        <div class="col-9">  <span id="fingerprint-mediaDevices"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488   border-info-fingerprint-fingerprintright">Mime Types</div>
+                                        <div class="col-9">  <span id="fingerprint-mimeTypes"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488  border-info-fingerprint-fingerprintright ">Hardware Concurrency</div>
+                                        <div class="col-9">  <span id="fingerprint-hardwareConcurrency"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488  border-info-fingerprint-fingerprintright ">Screen Resolution</div>
+                                        <div class="col-9">   <span id="fingerprint-screenResolution"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488  border-info-fingerprint-fingerprintright ">Timezone Offset</div>
+                                        <div class="col-9">   <span id="fingerprint-timezoneOffset"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 br-1 border-info-fingerprint">
+                                    <div class="row p-1">
+                                        <div class="col-3 pl-3 color-047488   border-info-fingerprint-fingerprintright">Date Time Format</div>
+                                        <div class="col-9">   <span id="fingerprint-dateTimeFormat"></span></div>
+                                    </div>
+                                </div>
+                                </div>
+                           
                         </div>
                     </div>
-
-
                 </div>
 
             </div>
 
-        </div>
-
-    </div>
 </template>
 
 <script setup>
@@ -419,7 +461,13 @@ function clearStoredData() {
     display: none;
     margin: 3%;
 }
-
+.border-info-fingerprint{
+    border-bottom: 1px solid #04748833;
+    font-size: 14px;
+}
+.border-info-fingerprint-fingerprintright{
+    border-right: 1px solid #04748833;
+}
 .table tbody tr:last-of-type {
     border-bottom: 2px solid #008198;
 }
@@ -463,59 +511,27 @@ img {
 }
 
 
-#sidbar {
-    display: inline-block;
-    background: #f1f1f1;
-}
-
-#sidbar .div-header {
-    font-family: 'Orbitron', sans-serif;
-}
-
-/* display: inline; */
-
-
-#sidbar li {
-    list-style: none;
-    padding: 8px;
-
-}
-
-#sidbar ul {
-    padding: 0px;
-    text-align: left;
-}
-
-.color-047488 {
-    color: #047488;
-}
-
-#sidbar img {
-    width: 23px;
-}
-
-#sidbar p {
-    padding-left: 6px;
-    display: inline-block;
-    margin: 2px;
-}
-
-#sidbar li:hover {
-    color: #047488;
-}
-
 .app {
     display: inline-block;
 }
 
 .div-header {
     padding: 10px 0;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #80808033;
 }
 
 .cover {
     height: 892px;
 
+}
+
+.color-047488 {
+    color: #047488;
+}
+
+.div-header-primary{
+    padding: 10px 0;
+    border-bottom: 1px solid gray;
 }
 </style>
 
