@@ -30,13 +30,13 @@ const deviceInfoProperties = [
     
     // Document Object
     "document.cookie",
-    "document.domain",
+    // "document.domain",
     "document.referrer",
     "document.hasFocus",
     
     // Window Object
     //"window.localStorage",
-    "window.sessionStorage",
+    // "window.sessionStorage",
     "window.indexedDB",
     "window.devicePixelRatio",
     "window.matchMedia",
@@ -65,7 +65,7 @@ const deviceInfoProperties = [
     
     // Events
     "document.ontouchstart",
-    "document.onmousemove",
+    // "document.onmousemove",
     
     // Time & Date
     "Date.prototype.getTimezoneOffset",

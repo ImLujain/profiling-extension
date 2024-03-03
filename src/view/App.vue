@@ -13,7 +13,7 @@
                     <li>
                         <router-link to="/about">
                             <img src="./../../public/about.png" />
-                        <p class="color-047488">About us </p>
+                        <p class="color-047488">About Browser Fingerprint </p>
                         </router-link >
                     </li>
                     <li>
